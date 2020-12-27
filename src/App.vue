@@ -1,14 +1,34 @@
-<template>
-  <Test />
+<template lang="pug">
+.grid.grid-cols-2
+  .col-span-full
+    Header
+  .col-span-full
+    AlgorithmInfo
+  .row-span-2.col-span-1
+    AlgorithmLegend
+    Array
+  .col-span-1
+    AlgorithmCode
+  .col-span-full
+    ProgressBar
 </template>
 
 <script>
-import Test from './components/Test.vue';
+import Header from './components/Header.vue';
+import AlgorithmInfo from './components/AlgorithmInfo.vue';
+import AlgorithmLegend from './components/AlgorithmLegend.vue';
+import Array from './components/Array.vue';
+import AlgorithmCode from './components/AlgorithmCode.vue';
+import ProgressBar from './components/ProgressBar.vue';
 
 export default {
-  name: 'App',
   components: {
-    Test
+    Header,
+    AlgorithmInfo,
+    AlgorithmLegend,
+    Array,
+    AlgorithmCode,
+    ProgressBar
   }
 };
 </script>
@@ -20,6 +40,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
