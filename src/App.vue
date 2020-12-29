@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Header from './components/Header.vue';
+import Header from './components/Header/Header.vue';
 import AlgorithmInfo from './components/AlgorithmInfo.vue';
 import AlgorithmLegend from './components/AlgorithmLegend.vue';
 import Array from './components/Array.vue';
