@@ -7,6 +7,9 @@ module.exports = {
         'light-navy': '#7360ff',
         'sky-blue': '#00d8ff',
         'dark-sky-blue': '#00bcf5'
+      },
+      transitionDuration: {
+        '2000': '2000ms'
       }
     }
   },

@@ -9,13 +9,14 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-3.shadow-xl
     span.font-semibold.text-xl.tracking-tight(class='md:text-2xl') Sorting Algorithms Visualizer
   // Content
   .menu.flex.flex-grow.w-full.justify-start(class='md:w-auto xl:justify-end')
-    Attribute(:items='$store.state.options.algorithms') Algorithms
+    Attribute(:value='$store.state.algorithm', :items='$store.state.options.algorithms') Algorithms
     Attribute Numbers
-    Attribute(:items='$store.state.options.sizes', @selected='size = $event') Size: {{ size }}
-    Attribute(:items='$store.state.options.speeds', @selected='speed = $event') Speed: {{ speed }}
-    Attribute Shuffle
+    Attribute(:value='$store.state.size', :items='$store.state.options.sizes', @selected='size = $event') Size: {{ size }}
+    Attribute(:value='$store.state.speed', :items='$store.state.options.speeds', @selected='speed = $event') Speed: {{ speed }}
+    div(@click='$store.commit("shuffle")')
+      Attribute Shuffle
     button.bg-sky-blue.text-2xl.px-6.py-2.rounded.transition.duration-500(
-      @click='commitChanges(algorithm, size, speed)',
+      @click='$store.commit("changeOptions", payload)',
       class='hover:bg-dark-sky-blue md:ml-4'
     ) Visualize!
 </template>
@@ -25,13 +26,9 @@ import Attribute from '@/components/Header/Attribute.vue';
 
 export default {
   name: 'Header',
+
   components: { Attribute },
-  beforeMount() {
-    this.algorithm = this.$store.state.algorithm;
-    this.numbers = this.$store.state.numbers;
-    this.size = this.$store.state.size;
-    this.speed = this.$store.state.speed;
-  },
+
   data() {
     return {
       algorithm: '',
@@ -39,10 +36,24 @@ export default {
       size: 0,
       speed: ''
     };
+  },
+
+  computed: {
+    payload() {
+      return { algo: this.algo, size: this.size, speed: this.speed };
+    }
+  },
+
+  beforeMount() {
+    this.algorithm = this.$store.state.algorithm;
+    this.numbers = this.$store.state.numbers;
+    this.size = this.$store.state.size;
+    this.speed = this.$store.state.speed;
   }
 };
 </script>
 
+// Hamburger button animations
 <style scoped>
 @media (max-width: 768px) {
   .navicon {
