@@ -10,43 +10,38 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-3.shadow-xl
   // Content
   .menu.flex.flex-grow.w-full.justify-start(class='md:w-auto xl:justify-end')
     Attribute(:value='$store.state.algorithm', :items='$store.state.options.algorithms') Algorithms
-    Attribute Numbers
+    Attribute(:value='"Insert " + size + " numbers"', :input='true') Numbers
     Attribute(:value='$store.state.size', :items='$store.state.options.sizes', @selected='size = $event') Size: {{ size }}
     Attribute(:value='$store.state.speed', :items='$store.state.options.speeds', @selected='speed = $event') Speed: {{ speed }}
     div(@click='$store.commit("shuffle")')
       Attribute Shuffle
     button.bg-sky-blue.text-2xl.px-6.py-2.rounded.transition.duration-500(
       @click='$store.commit("changeOptions", payload)',
-      class='hover:bg-dark-sky-blue md:ml-4'
+      class='hover:bg-dark-sky-blue focus:outline-none md:ml-4'
     ) Visualize!
+    p {{ numbers }}
 </template>
 
 <script>
 import Attribute from '@/components/Header/Attribute.vue';
 
 export default {
-  name: 'Header',
-
   components: { Attribute },
-
   data() {
     return {
       algorithm: '',
-      numbers: [],
+      numbers: '',
       size: 0,
       speed: ''
     };
   },
-
   computed: {
     payload() {
       return { algo: this.algo, size: this.size, speed: this.speed };
     }
   },
-
-  beforeMount() {
+  mounted() {
     this.algorithm = this.$store.state.algorithm;
-    this.numbers = this.$store.state.numbers;
     this.size = this.$store.state.size;
     this.speed = this.$store.state.speed;
   }

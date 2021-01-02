@@ -1,11 +1,13 @@
 <template lang="pug">
 .border-t(class='md:border-none')
-.relative.flex.rounded-xl.text-xl.px-4.py-3.cursor-pointer.transition.duration-200(
+.test2.relative.flex.rounded-xl.text-xl.px-4.py-3.cursor-pointer.outline-none.transition.duration-200(
   @click='active = !active',
-  :class='[active ? "hover:bg-indigo-600 bg-indigo-600" : "hover:bg-indigo-400"]'
+  :class='[active ? "hover:bg-indigo-600 bg-indigo-600" : "hover:bg-indigo-400"]',
+  tabindex='1',
+  @blur='active = false'
 ) <slot></slot>
   // Dropdown stuff
-  .dropdown(v-if='items')
+  .dropdown(v-if='value')
     // SVG Icon
     svg.ml-1.mt-1.h-5.w-5(
       xmlns='http://www.w3.org/2000/svg',
@@ -20,6 +22,7 @@
       )
     // Content
     .absolute.left-0.mt-10.w-full.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5(v-show='active')
+      // Dropdown select elements
       .py-1(role='menu', aria-orientation='vertical', aria-labelledby='options-menu')
         .block.px-4.py-2.text-sm.text-gray-700(
           v-for='item in items',
@@ -28,16 +31,26 @@
           :class='[item == value ? "bg-gray-200" : ""]',
           role='menuitem'
         ) {{ item }}
+      // Dropdown input elements
+      input.px-2.border-gray-300.rounded-md.text-gray-600(
+        v-if='input',
+        :value='value',
+        @input='$emit("input", $event.target.value)',
+        type='text',
+        name='price',
+        placeholder='Insert ',
+        class='focus:outline-none focus:ring focus:border-blue-300'
+      ) 
 </template>
 
 <script>
 export default {
-  name: 'Attribute',
-
-  props: { items: Array, value: [String, Number] },
-
+  props: {
+    items: Array,
+    value: [String, Number],
+    input: Boolean
+  },
   emits: ['selected'],
-
   data() {
     return {
       active: false

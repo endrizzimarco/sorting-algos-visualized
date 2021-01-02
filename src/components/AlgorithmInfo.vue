@@ -1,5 +1,5 @@
 <template lang="pug">
-.flex.flex-wrap.mt-6.mx-5.text-left
+.flex.flex-wrap.mt-6.mb-20.mx-5.text-left
   .flex.w-full.pb-5
     h1.text-3xl Now showing: {{ $store.state.algorithm }}
   .flex.justify-center.pb-5.w-full(class='lg:w-6/12')

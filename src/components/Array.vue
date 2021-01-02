@@ -1,5 +1,5 @@
 <template lang="pug">
-.flex.w-full.justify-center.px-1
+.flex.justify-center.w-full.px-4
   transition-group(name='list-complete')
     .w-40.transition(v-for='(number, index) in $store.getters.slicedArray', :key='number.id', :class='classObject')
       .flex.h-0.border-2.justify-center(
@@ -12,13 +12,6 @@ button(@click='$store.commit("test")') Shuffle
 
 <script>
 export default {
-  name: 'Array',
-  data() {
-    return {
-      items: [1, 2, 3, 4, 5],
-      nextNum: 10
-    };
-  },
   computed: {
     classObject() {
       return {
