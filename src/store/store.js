@@ -31,6 +31,19 @@ const store = createStore({
         text:
           'Bubble Sort is a stable, in-place sorting algorithm that is named for the way smaller or larger elements "bubble" to the top of the list. \n Altough the algorithm is simple, it is too slow and impractical for most problems even when compared to insertion sort and is not recommended when n is large. The only significant advantage that bubble sort has over most other implementations, even quicksort, but not insertion sort, is the ability to detect if the list is already sorted.'
       }
+    },
+    algoCode: {
+      'Bubble Sort': {
+        line1: 'n = length(input)',
+        line2: 'do',
+        line3: '  swapped = false',
+        line4: '  for i=1 to n-1:',
+        line5: '    if leftElement > rightElement',
+        line6: '      swap(leftElement, rightElement)',
+        line7: '      swapped = true',
+        line8: '  n = n-1',
+        line9: 'while swapped'
+      }
     }
   },
   mutations: {
@@ -50,7 +63,8 @@ const store = createStore({
   },
   getters: {
     slicedArray: state => state.numbers.slice(0, state.size),
-    currentInfo: state => state.algoInfo[state.algorithm]
+    currentInfo: state => state.algoInfo[state.algorithm],
+    currentCode: state => state.algoCode[state.algorithm]
   }
 });
 
