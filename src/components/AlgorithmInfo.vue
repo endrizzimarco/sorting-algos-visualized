@@ -21,7 +21,11 @@
     p.mt-1 {{ algorithmInfo.text }}
     p.mt-2
       | Read more at:&nbsp
-      a.underline.text-blue-600.cursor-pointer(class='hover:text-blue-800 visited:text-purple-600"') {{ algorithmInfo.wikipedia }}
+      a.underline.text-blue-600.cursor-pointer(
+        :href='algorithmInfo.wikipedia',
+        target='_blank',
+        class='hover:text-blue-800 visited:text-purple-600'
+      ) {{ algorithmInfo.wikipedia }}
 </template>
 
 <script>
