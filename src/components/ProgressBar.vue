@@ -1,14 +1,13 @@
 <template lang="pug">
-.flex.items-center.max-w-2xl.h-9.mx-auto.mt-6.bg-light-navy.rounded
-  img.h-6.mx-1.ml-3.cursor-pointer(src='@/assets/fast-back.png')
-  img.h-6.mx-1.cursor-pointer(src='@/assets/back.png')
-  img.h-6.mx-1.cursor-pointer(
+.flex.items-center.max-w-2xl.h-9.mx-4.mt-6.bg-light-navy.rounded(class='md:mx-auto')
+  img.h-6.mx-2.ml-5.cursor-pointer(src='@/assets/fast-back.png')
+  img.h-6.mx-2.cursor-pointer(src='@/assets/back.png')
+  img.h-6.mx-2.cursor-pointer(
     @click='playing = !playing',
     :src='playing ? require("@/assets/pause.png") : require("@/assets/play.png")'
   )
-  img.h-6.mx-1.cursor-pointer(src='@/assets/forward.png')
-  img.h-6.mx-1.cursor-pointer(src='@/assets/fast-forward.png')
-  img.h-6.mx-1.cursor-pointer(src='@/assets/fast-forward.png')
+  img.h-6.mx-2.cursor-pointer(src='@/assets/forward.png')
+  img.h-6.mx-2.cursor-pointer(src='@/assets/fast-forward.png')
   .w-full
     input(type='range', min='1', max='1000', value='1')
 </template>
