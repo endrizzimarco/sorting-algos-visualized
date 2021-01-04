@@ -13,7 +13,7 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-3.shadow-xl
     Attribute(:value='"Insert " + size + " numbers"', :input='true') Numbers
     Attribute(:value='$store.state.size', :items='$store.state.options.sizes', @selected='size = $event') Size: {{ size }}
     Attribute(:value='$store.state.speed', :items='$store.state.options.speeds', @selected='speed = $event') Speed: {{ speed }}
-    div(@click='$store.commit("shuffle")')
+    div(@click='$store.commit("generateNumbers")')
       Attribute Shuffle
     button.bg-sky-blue.text-2xl.px-6.py-2.rounded.transition.duration-500(
       @click='$store.commit("changeOptions", payload)',

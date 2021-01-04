@@ -9,11 +9,11 @@
   img.h-6.mx-2.cursor-pointer(src='@/assets/forward.png', @click='nextStep')
   img.h-6.mx-2.cursor-pointer(src='@/assets/fast-forward.png', @click='lastStep')
   .w-full
-    input(type='range', min='0', :max='steps.length', v-model='currentStep', @change='jumpStep') 
+    input(type='range', min='0', :max='steps.length', v-model='currentStep', @input='jumpStep') 
 </template>
 
 <script>
-import { mapState, mapMutations, mapGetters } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   data() {
@@ -31,38 +31,42 @@ export default {
         clearInterval(this.interval);
       }
     },
+    commitStep(stepIndex) {
+      this.$store.commit(this.steps[stepIndex].mutation, this.steps[stepIndex].payload);
+    },
     nextStep() {
       if (this.currStep <= this.steps.length) {
-        this.$store.commit(this.steps[this.currStep].mutation, this.steps[this.currStep].payload);
+        this.commitStep(this.currStep);
         this.increaseStep();
       }
     },
     prevStep() {
       if (this.currStep > 0) {
-        this.resetMutations();
+        this.undoMutations();
         for (let i = 0; i < this.currStep - 1; i++) {
-          this.$store.commit(this.steps[i].mutation, this.steps[i].payload);
+          this.commitStep(i);
         }
         this.decreaseStep();
       }
     },
     firstStep() {
-      this.resetMutations();
-      this.minStep();
+      this.undoMutations();
+      this.setStep(0);
     },
     lastStep() {
+      this.undoMutations();
       for (let i = 0; i < this.steps.length; i++) {
-        this.$store.commit(this.steps[i].mutation, this.steps[i].payload);
+        this.commitStep(i);
       }
-      this.maxStep(this.steps.length);
+      this.setStep(this.steps.length);
     },
     jumpStep() {
-      this.resetMutations();
+      this.undoMutations();
       for (let i = 0; i < this.currStep; i++) {
-        this.$store.commit(this.steps[i].mutation, this.steps[i].payload);
+        this.commitStep(i);
       }
     },
-    ...mapMutations(['increaseStep', 'decreaseStep', 'minStep', 'maxStep', 'setStep', 'resetMutations'])
+    ...mapMutations(['increaseStep', 'decreaseStep', 'setStep', 'undoMutations'])
   },
   computed: {
     currentStep: {
@@ -73,8 +77,7 @@ export default {
         this.setStep(value);
       }
     },
-    ...mapState(['currStep']),
-    ...mapGetters({ steps: 'bubbleSort' })
+    ...mapState(['steps', 'currStep'])
   }
 };
 </script>

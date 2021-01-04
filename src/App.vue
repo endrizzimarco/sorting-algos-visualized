@@ -29,6 +29,9 @@ export default {
     Array,
     AlgorithmCode,
     ProgressBar
+  },
+  beforeMount: function () {
+    this.$store.commit('generateNumbers');
   }
 };
 </script>

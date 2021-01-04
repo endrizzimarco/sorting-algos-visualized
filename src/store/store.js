@@ -1,92 +1,74 @@
 import { createStore } from 'vuex';
-
-function generateNumbers() {
-  var numbers = [];
-  for (let i = 0; i < 8; i++) {
-    numbers.push({
-      id: i,
-      value: Math.floor(Math.random() * 100),
-      color: 'bg-red-300'
-    });
-  }
-  return numbers;
-}
-
-let initialState = generateNumbers();
-let originalState = JSON.parse(JSON.stringify(initialState));
+import algoData from './algoData.js';
 
 const store = createStore({
   state: {
     algorithm: 'Bubble Sort',
     size: 5,
-    numbers: initialState,
+    numbers: [],
+    numbersSnapshot: [],
     speed: 'Average',
+    steps: [],
     currStep: 0,
     options: {
       algorithms: ['Bubble Sort', 'Bogus Sort', 'Hamlalaa'],
       sizes: [4, 5, 6, 7, 8],
       speeds: ['Slow', 'Average', 'Fast']
     },
-    algoDetails: {
-      'Bubble Sort': {
-        complexities: {
-          timeBest: 'Ω(n)',
-          timeAverage: 'Θ(n^2)',
-          timeWorst: 'O(n^2)',
-          spaceWorst: 'O(1)'
-        },
-        wikipedia: 'https://en.wikipedia.org/wiki/Bubble_sort',
-        text: `Bubble Sort is a stable, in-place sorting algorithm that is named for the way
-              smaller or larger elements "bubble" to the top of the list. Altough the algorithm is simple,
-              it is too slow and impractical for most problems even when compared to insertion sort and is not
-              recommended when n is large. The only significant advantage that bubble sort has over most other 
-              implementations, even quicksort, but not insertion sort, is the ability to detect if the list is already sorted.`,
-        implementation: {
-          block1: {
-            code: 'n = length(input)\ndo',
-            explanation: 'HOLY FUCK DUDE'
-          },
-          block2: {
-            code: '  swapped = false\n  for i=1 to n-1:',
-            explanation: 'this is block 2(pog)'
-          },
-          block3: {
-            code: '    if leftElement > rightElement',
-            explanation: 'we are possibly comparing stuff'
-          },
-          block4: {
-            code: '      swap(leftElement, rightElement)\n      swapped = true',
-            explanation: 'we do be swapping'
-          },
-          block5: {
-            code: '  n = n-1\nwhile swapped',
-            explanation: 'this is the end'
-          }
-        }
-      }
-    }
+    algoData: algoData
   },
   mutations: {
-    increaseStep: state => state.currStep++,
-    decreaseStep: state => state.currStep--,
-    minStep: state => (state.currStep = 0),
-    maxStep: (state, payload) => (state.currStep = payload),
-    setStep: (state, payload) => (state.currStep = payload),
+    /* 
+    *******************************
+      CONTROL VISUALIZATION DATA
+    *******************************
+    */
+    // Generate array for visualization
+    generateNumbers(state) {
+      state.numbers = [];
+      state.numbersSnapshot = [];
+      for (let i = 0; i < 8; i++) {
+        let cell = {
+          id: i,
+          value: Math.floor(Math.random() * 100),
+          color: 'bg-red-300'
+        };
+        state.numbers.push(cell);
+        state.numbersSnapshot.push(cell);
+      }
+      this.commit('resetVisualizer');
+    },
+    // Reset the visualizer to initial state
+    resetVisualizer(state) {
+      state.currStep = 0;
+      this.commit('undoMutations');
+      this.commit('bubbleSort');
+    },
+    // Change settings for visualization and reset to beginning
     changeOptions(state, payload) {
       state.algo = payload.algo;
       state.size = payload.size;
       state.speed = payload.speed;
+      this.commit('resetVisualizer');
     },
+    /* 
+      ********************************
+        CONTROL VISUALIZATION STEPS
+      ********************************
+    */
+    increaseStep: state => state.currStep++,
+    decreaseStep: state => state.currStep--,
+    setStep: (state, payload) => (state.currStep = payload),
     // Restore numbers to original set
-    resetMutations(state) {
-      let originalCopy = JSON.parse(JSON.stringify(originalState));
+    undoMutations(state) {
+      let originalCopy = JSON.parse(JSON.stringify(state.numbersSnapshot));
       state.numbers = originalCopy;
     },
-    // Randomly generate a new set of numbers
-    shuffle(state) {
-      state.numbers = generateNumbers();
-      originalState = JSON.parse(JSON.stringify(state.numbers));
-    },
+    /* 
+    ************************************
+      ALGORITHMS STEPS IMPLEMENTATION
+    ************************************
+    */
     // Swap two numbers in array based on payload indexes
     swap(state, payload) {
       let temp = state.numbers[payload[1]];
@@ -107,38 +89,40 @@ const store = createStore({
         state.numbers[payload[1]].color = 'bg-red-300';
       }
     },
-    pass() {}
-  },
-  getters: {
-    slicedArray: state => state.numbers.slice(0, state.size),
-    currAlgoDetails: state => state.algoDetails[state.algorithm],
+    pass: () => 0,
+    //TODO: Put this in another file
     bubbleSort(state) {
-      let arrayCopy = state.numbers.slice(0, state.size);
+      state.steps = [];
+      let arrayCopy = JSON.parse(JSON.stringify(state.numbers)).slice(0, state.size);
       let n = state.size;
       let swapped;
-      let steps = [];
       do {
         swapped = false;
-        steps.push({ mutation: 'pass', codeBlock: 'block2' });
+        state.steps.push({ mutation: 'pass', codeBlock: 'block2' });
         for (let i = 1; i < n; i++) {
-          steps.push({ mutation: 'compare', payload: [i - 1, i, i - 2], codeBlock: 'block2' });
+          state.steps.push({ mutation: 'compare', payload: [i - 1, i, i - 2], codeBlock: 'block3' });
           if (arrayCopy[i - 1].value > arrayCopy[i].value) {
             let temp = arrayCopy[i - 1];
             arrayCopy[i - 1] = arrayCopy[i];
             arrayCopy[i] = temp;
-            steps.push({ mutation: 'swap', payload: [i - 1, i], codeBlock: 'block3' });
+            state.steps.push({ mutation: 'swap', payload: [i - 1, i], codeBlock: 'block4' });
             swapped = true;
           }
         }
-        steps.push({ mutation: 'done', payload: [n - 1, n - 2], codeBlock: 'block4' });
+        state.steps.push({ mutation: 'done', payload: [n - 1, n - 2], codeBlock: 'block5' });
         n -= 1;
       } while (swapped);
       while (n) {
-        steps.push({ mutation: 'done', payload: [n - 1, n - 2], codeBlock: 'block4' });
+        state.steps.push({ mutation: 'done', payload: [n - 1, n - 2], codeBlock: 'block5' });
         n--;
       }
-      return steps;
     }
+  },
+  getters: {
+    // Show array based on size
+    slicedArray: state => state.numbers.slice(0, state.size),
+    // Return data for current algorithm
+    currAlgoData: state => state.algoData[state.algorithm]
   }
 });
 

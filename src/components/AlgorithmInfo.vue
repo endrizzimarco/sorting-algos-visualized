@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     algorithmInfo() {
-      return this.$store.getters.currAlgoDetails;
+      return this.$store.getters.currAlgoData;
     }
   }
 };
