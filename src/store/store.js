@@ -21,6 +21,7 @@ const store = createStore({
     size: 5,
     numbers: initialState,
     speed: 'Average',
+    currStep: 0,
     options: {
       algorithms: ['Bubble Sort', 'Bogus Sort', 'Hamlalaa'],
       sizes: [4, 5, 6, 7, 8],
@@ -66,13 +67,18 @@ const store = createStore({
     }
   },
   mutations: {
+    increaseStep: state => state.currStep++,
+    decreaseStep: state => state.currStep--,
+    minStep: state => (state.currStep = 0),
+    maxStep: (state, payload) => (state.currStep = payload),
+    setStep: (state, payload) => (state.currStep = payload),
     changeOptions(state, payload) {
       state.algo = payload.algo;
       state.size = payload.size;
       state.speed = payload.speed;
     },
     // Restore numbers to original set
-    restoreNumbers(state) {
+    resetMutations(state) {
       let originalCopy = JSON.parse(JSON.stringify(originalState));
       state.numbers = originalCopy;
     },
@@ -113,22 +119,22 @@ const store = createStore({
       let steps = [];
       do {
         swapped = false;
-        steps.push({ animation: 'pass', highlight: ['line3', 'line4'] });
+        steps.push({ mutation: 'pass', codeBlock: 'block2' });
         for (let i = 1; i < n; i++) {
-          steps.push({ animation: 'compare', params: [i - 1, i, i - 2], highlight: ['line5'] });
+          steps.push({ mutation: 'compare', payload: [i - 1, i, i - 2], codeBlock: 'block2' });
           if (arrayCopy[i - 1].value > arrayCopy[i].value) {
             let temp = arrayCopy[i - 1];
             arrayCopy[i - 1] = arrayCopy[i];
             arrayCopy[i] = temp;
-            steps.push({ animation: 'swap', params: [i - 1, i], highlight: ['line6', 'line7'] });
+            steps.push({ mutation: 'swap', payload: [i - 1, i], codeBlock: 'block3' });
             swapped = true;
           }
         }
-        steps.push({ animation: 'done', params: [n - 1, n - 2] });
+        steps.push({ mutation: 'done', payload: [n - 1, n - 2], codeBlock: 'block4' });
         n -= 1;
       } while (swapped);
       while (n) {
-        steps.push({ animation: 'done', params: [n - 1, n - 2] });
+        steps.push({ mutation: 'done', payload: [n - 1, n - 2], codeBlock: 'block4' });
         n--;
       }
       return steps;

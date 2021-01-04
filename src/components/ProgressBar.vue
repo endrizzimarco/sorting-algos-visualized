@@ -9,17 +9,17 @@
   img.h-6.mx-2.cursor-pointer(src='@/assets/forward.png', @click='nextStep')
   img.h-6.mx-2.cursor-pointer(src='@/assets/fast-forward.png', @click='lastStep')
   .w-full
-    input(type='range', min='0', :max='allSteps.length', v-model='currStep', @change='jumpStep') 
+    input(type='range', min='0', :max='steps.length', v-model='currentStep', @change='jumpStep') 
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
       playing: false,
-      interval: '',
-      currStep: 0,
-      allSteps: this.$store.getters.bubbleSort
+      interval: ''
     };
   },
   methods: {
@@ -32,36 +32,49 @@ export default {
       }
     },
     nextStep() {
-      if (this.currStep <= this.allSteps.length) {
-        this.$store.commit(this.allSteps[this.currStep].type, this.allSteps[this.currStep].params);
-        this.currStep++;
+      if (this.currStep <= this.steps.length) {
+        this.$store.commit(this.steps[this.currStep].mutation, this.steps[this.currStep].payload);
+        this.increaseStep();
       }
     },
     prevStep() {
       if (this.currStep > 0) {
-        this.$store.commit('restoreNumbers');
+        this.resetMutations();
         for (let i = 0; i < this.currStep - 1; i++) {
-          this.$store.commit(this.allSteps[i].type, this.allSteps[i].params);
+          this.$store.commit(this.steps[i].mutation, this.steps[i].payload);
         }
-        this.currStep--;
+        this.decreaseStep();
       }
     },
     firstStep() {
-      this.$store.commit('restoreNumbers');
-      this.currStep = 0;
+      this.resetMutations();
+      this.minStep();
     },
     lastStep() {
-      for (let i = 0; i < this.allSteps.length; i++) {
-        this.$store.commit(this.allSteps[i].type, this.allSteps[i].params);
+      for (let i = 0; i < this.steps.length; i++) {
+        this.$store.commit(this.steps[i].mutation, this.steps[i].payload);
       }
-      this.currStep = this.allSteps.length;
+      this.maxStep(this.steps.length);
     },
     jumpStep() {
-      this.$store.commit('restoreNumbers');
+      this.resetMutations();
       for (let i = 0; i < this.currStep; i++) {
-        this.$store.commit(this.allSteps[i].type, this.allSteps[i].params);
+        this.$store.commit(this.steps[i].mutation, this.steps[i].payload);
       }
-    }
+    },
+    ...mapMutations(['increaseStep', 'decreaseStep', 'minStep', 'maxStep', 'setStep', 'resetMutations'])
+  },
+  computed: {
+    currentStep: {
+      get() {
+        return this.currStep;
+      },
+      set(value) {
+        this.setStep(value);
+      }
+    },
+    ...mapState(['currStep']),
+    ...mapGetters({ steps: 'bubbleSort' })
   }
 };
 </script>
