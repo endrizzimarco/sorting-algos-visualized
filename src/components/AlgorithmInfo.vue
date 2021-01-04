@@ -32,7 +32,6 @@
 export default {
   methods: {
     complexityColor(complexity) {
-      console.log(typeof complexity);
       return {
         'px-3 py-1 rounded': true,
         'bg-green-300': /.\(1\)/gm.test(complexity),
@@ -44,7 +43,7 @@ export default {
   },
   computed: {
     algorithmInfo() {
-      return this.$store.getters.currentInfo;
+      return this.$store.getters.currAlgoDetails;
     }
   }
 };

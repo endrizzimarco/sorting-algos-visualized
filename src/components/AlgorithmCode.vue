@@ -1,9 +1,18 @@
 <template lang="pug">
-.flex.flex-col
-  .flex.ml-10(v-for='line in $store.getters.currentCode')
-    pre {{ line }}
+.flex.justify-around
+  p.bg-indigo-200
+
+  .flex.flex-col
+    .flex(v-for='block in algoCode')
+      pre {{ block.code }}
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    algoCode() {
+      return this.$store.getters.currAlgoDetails.implementation;
+    }
+  }
+};
 </script>
