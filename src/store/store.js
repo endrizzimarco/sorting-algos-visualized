@@ -3,16 +3,23 @@ import { createStore } from 'vuex';
 function generateNumbers() {
   var numbers = [];
   for (let i = 0; i < 8; i++) {
-    numbers.push({ id: i, value: Math.floor(Math.random() * 100) });
+    numbers.push({
+      id: i,
+      value: Math.floor(Math.random() * 100),
+      color: 'bg-red-300'
+    });
   }
   return numbers;
 }
+
+let initialState = generateNumbers();
+let originalState = JSON.parse(JSON.stringify(initialState));
 
 const store = createStore({
   state: {
     algorithm: 'Bubble Sort',
     size: 5,
-    numbers: generateNumbers(),
+    numbers: initialState,
     speed: 'Average',
     options: {
       algorithms: ['Bubble Sort', 'Bogus Sort', 'Hamlalaa'],
@@ -29,7 +36,7 @@ const store = createStore({
         },
         wikipedia: 'https://en.wikipedia.org/wiki/Bubble_sort',
         text:
-          'Bubble Sort is a stable, in-place sorting algorithm that is named for the way smaller or larger elements "bubble" to the top of the list. \n Altough the algorithm is simple, it is too slow and impractical for most problems even when compared to insertion sort and is not recommended when n is large. The only significant advantage that bubble sort has over most other implementations, even quicksort, but not insertion sort, is the ability to detect if the list is already sorted.'
+          'Bubble Sort is a stable, in-place sorting algorithm that is named for the way smaller or larger elements "bubble" to the top of the list. Altough the algorithm is simple, it is too slow and impractical for most problems even when compared to insertion sort and is not recommended when n is large. The only significant advantage that bubble sort has over most other implementations, even quicksort, but not insertion sort, is the ability to detect if the list is already sorted.'
       }
     },
     algoCode: {
@@ -52,19 +59,67 @@ const store = createStore({
       state.size = payload.size;
       state.speed = payload.speed;
     },
+    // Restore numbers to original set
+    restoreNumbers(state) {
+      let originalCopy = JSON.parse(JSON.stringify(originalState));
+      state.numbers = originalCopy;
+    },
+    // Randomly generate a new set of numbers
     shuffle(state) {
       state.numbers = generateNumbers();
+      originalState = JSON.parse(JSON.stringify(state.numbers));
     },
-    test(state) {
-      let temp = state.numbers[1];
-      state.numbers[1] = state.numbers[0];
-      state.numbers[0] = temp;
+    // Swap two numbers in array based on payload indexes
+    swap(state, payload) {
+      let temp = state.numbers[payload[1]];
+      state.numbers[payload[1]] = state.numbers[payload[0]];
+      state.numbers[payload[0]] = temp;
+      state.numbers[payload[0]].color = state.numbers[payload[1]].color = 'bg-red-300';
+    },
+    // Set yellow backgrounds of array items based on indexes
+    compare(state, payload) {
+      if (state.numbers[payload[2]]) {
+        state.numbers[payload[2]].color = 'bg-red-300';
+      }
+      state.numbers[payload[0]].color = state.numbers[payload[1]].color = 'bg-yellow-300';
+    },
+    done(state, payload) {
+      state.numbers[payload[0]].color = 'bg-green-300';
+      if (state.numbers[payload[1]]) {
+        state.numbers[payload[1]].color = 'bg-red-300';
+      }
     }
   },
   getters: {
     slicedArray: state => state.numbers.slice(0, state.size),
     currentInfo: state => state.algoInfo[state.algorithm],
-    currentCode: state => state.algoCode[state.algorithm]
+    currentCode: state => state.algoCode[state.algorithm],
+    bubbleSort(state) {
+      let arrayCopy = state.numbers.slice(0, state.size);
+      let n = state.size;
+      let swapped;
+      let steps = [];
+      do {
+        swapped = false;
+        for (let i = 1; i < n; i++) {
+          steps.push({ type: 'compare', params: [i - 1, i, i - 2] });
+          if (arrayCopy[i - 1].value > arrayCopy[i].value) {
+            let temp = arrayCopy[i - 1];
+            arrayCopy[i - 1] = arrayCopy[i];
+            arrayCopy[i] = temp;
+            steps.push({ type: 'swap', params: [i - 1, i] });
+            swapped = true;
+          }
+        }
+        steps.push({ type: 'done', params: [n - 1, n - 2] });
+        n -= 1;
+      } while (swapped);
+      while (n) {
+        steps.push({ type: 'done', params: [n - 1, n - 2] });
+        n--;
+      }
+      return steps;
+    }
   }
 });
 
