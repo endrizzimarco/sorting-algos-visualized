@@ -1,5 +1,5 @@
 <template lang="pug">
-.flex.items-center.max-w-2xl.h-9.mx-4.mt-6.bg-light-navy.rounded(class='md:mx-auto')
+.flex.items-center.max-w-2xl.h-9.mx-4.mt-6.bg-light-navy.rounded.shadow-lg(class='md:mx-auto')
   img.h-6.mx-2.ml-5.cursor-pointer(src='@/assets/fast-back.png', @click='firstStep')
   img.h-6.mx-2.cursor-pointer(src='@/assets/back.png', @click='prevStep')
   img.h-6.mx-2.cursor-pointer(
@@ -35,15 +35,15 @@ export default {
       this.$store.commit(this.steps[stepIndex].mutation, this.steps[stepIndex].payload);
     },
     nextStep() {
-      if (this.currStep <= this.steps.length) {
-        this.commitStep(this.currStep);
+      if (this.stepIndex <= this.steps.length) {
+        this.commitStep(this.stepIndex);
         this.increaseStep();
       }
     },
     prevStep() {
-      if (this.currStep > 0) {
+      if (this.stepIndex > 0) {
         this.undoMutations();
-        for (let i = 0; i < this.currStep - 1; i++) {
+        for (let i = 0; i < this.stepIndex - 1; i++) {
           this.commitStep(i);
         }
         this.decreaseStep();
@@ -62,7 +62,7 @@ export default {
     },
     jumpStep() {
       this.undoMutations();
-      for (let i = 0; i < this.currStep; i++) {
+      for (let i = 0; i < this.stepIndex; i++) {
         this.commitStep(i);
       }
     },
@@ -71,13 +71,13 @@ export default {
   computed: {
     currentStep: {
       get() {
-        return this.currStep;
+        return this.stepIndex;
       },
       set(value) {
         this.setStep(value);
       }
     },
-    ...mapState(['steps', 'currStep'])
+    ...mapState(['steps', 'stepIndex'])
   }
 };
 </script>

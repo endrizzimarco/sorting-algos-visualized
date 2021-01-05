@@ -1,9 +1,13 @@
 <template lang="pug">
 .flex.justify-center.w-full.px-4
   transition-group(name='list-complete')
-    .w-40.transition(v-for='(number, index) in $store.getters.slicedArray', :key='number.id', :class='classObject')
-      .flex.h-0.border-2.justify-center.transition.duration-500(
-        :class='[[index == 0 ? "border-l-2" : "border-l-0"], $store.state.numbers[index].color]',
+    .w-40.transition.shadow-lg(
+      v-for='(number, index) in $store.getters.slicedArray',
+      :key='number.id',
+      :class='classObject'
+    )
+      .flex.justify-center.h-0.border.border-opacity-10.border-black.transition.duration-500(
+        :class='[[index == 0 ? "" : "border-l-0"], $store.state.numbers[index].color]',
         style='padding-bottom: 100%'
       ) 
         .font-light.text-2xl(style='padding-top: 33%', class='sm:text-3xl') {{ number.value }}

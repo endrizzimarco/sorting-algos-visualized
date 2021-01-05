@@ -9,7 +9,7 @@ const store = createStore({
     numbersSnapshot: [],
     speed: 'Average',
     steps: [],
-    currStep: 0,
+    stepIndex: 0,
     options: {
       algorithms: ['Bubble Sort', 'Bogus Sort', 'Hamlalaa'],
       sizes: [4, 5, 6, 7, 8],
@@ -40,7 +40,8 @@ const store = createStore({
     },
     // Reset the visualizer to initial state
     resetVisualizer(state) {
-      state.currStep = 0;
+      state.stepIndex = 0;
+      state.steps = [];
       this.commit('undoMutations');
       this.commit('bubbleSort');
     },
@@ -56,9 +57,9 @@ const store = createStore({
         CONTROL VISUALIZATION STEPS
       ********************************
     */
-    increaseStep: state => state.currStep++,
-    decreaseStep: state => state.currStep--,
-    setStep: (state, payload) => (state.currStep = payload),
+    increaseStep: state => state.stepIndex++,
+    decreaseStep: state => state.stepIndex--,
+    setStep: (state, payload) => (state.stepIndex = payload),
     // Restore numbers to original set
     undoMutations(state) {
       let originalCopy = JSON.parse(JSON.stringify(state.numbersSnapshot));
@@ -92,28 +93,51 @@ const store = createStore({
     pass: () => 0,
     //TODO: Put this in another file
     bubbleSort(state) {
-      state.steps = [];
       let arrayCopy = JSON.parse(JSON.stringify(state.numbers)).slice(0, state.size);
       let n = state.size;
       let swapped;
       do {
         swapped = false;
-        state.steps.push({ mutation: 'pass', codeBlock: 'block2' });
+        state.steps.push({
+          mutation: 'pass',
+          codeBlock: 'block2',
+          explanation: 'Entering for loop\nSet swapped flag to false'
+        });
         for (let i = 1; i < n; i++) {
-          state.steps.push({ mutation: 'compare', payload: [i - 1, i, i - 2], codeBlock: 'block3' });
+          state.steps.push({
+            mutation: 'compare',
+            payload: [i - 1, i, i - 2],
+            codeBlock: 'block3',
+            explanation: `Comparing the values ${arrayCopy[i - 1].value} and ${arrayCopy[i].value}\na`
+          });
           if (arrayCopy[i - 1].value > arrayCopy[i].value) {
+            state.steps.push({
+              mutation: 'swap',
+              payload: [i - 1, i],
+              codeBlock: `block4`,
+              explanation: `Swapping ${arrayCopy[i - 1].value} and ${arrayCopy[i].value}\nSet swapped flag to true`
+            });
             let temp = arrayCopy[i - 1];
             arrayCopy[i - 1] = arrayCopy[i];
             arrayCopy[i] = temp;
-            state.steps.push({ mutation: 'swap', payload: [i - 1, i], codeBlock: 'block4' });
             swapped = true;
           }
         }
-        state.steps.push({ mutation: 'done', payload: [n - 1, n - 2], codeBlock: 'block5' });
+        state.steps.push({
+          mutation: 'done',
+          payload: [n - 1, n - 2],
+          codeBlock: 'block5',
+          explanation: `${arrayCopy[n - 1].value} is sorted\na`
+        });
         n -= 1;
       } while (swapped);
       while (n) {
-        state.steps.push({ mutation: 'done', payload: [n - 1, n - 2], codeBlock: 'block5' });
+        state.steps.push({
+          mutation: 'done',
+          payload: [n - 1, n - 2],
+          codeBlock: 'block5',
+          explanation: `${arrayCopy[n - 1].value} is sorted\na`
+        });
         n--;
       }
     }
