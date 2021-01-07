@@ -18,24 +18,24 @@ import { mapState, mapMutations } from 'vuex';
 export default {
   data() {
     return {
-      playing: false,
-      interval: ''
+      playing: false
     };
   },
   methods: {
     handlePlay() {
       this.playing = !this.playing;
       if (this.playing) {
-        this.interval = setInterval(this.nextStep, 1000);
+        this.nextStep();
+        this.setInterval(this.nextStep);
       } else {
-        clearInterval(this.interval);
+        this.clearInterval();
       }
     },
     commitStep(stepIndex) {
       this.$store.commit(this.steps[stepIndex].mutation, this.steps[stepIndex].payload);
     },
     nextStep() {
-      if (this.stepIndex <= this.steps.length) {
+      if (this.stepIndex <= this.steps.length - 1) {
         this.commitStep(this.stepIndex);
         this.increaseStep();
       }
@@ -66,7 +66,7 @@ export default {
         this.commitStep(i);
       }
     },
-    ...mapMutations(['increaseStep', 'decreaseStep', 'setStep', 'undoMutations'])
+    ...mapMutations(['increaseStep', 'decreaseStep', 'setStep', 'undoMutations', 'setInterval', 'clearInterval'])
   },
   computed: {
     currentStep: {
@@ -78,6 +78,14 @@ export default {
       }
     },
     ...mapState(['steps', 'stepIndex'])
+  },
+  watch: {
+    stepIndex() {
+      if (this.stepIndex == this.steps.length) {
+        this.playing = false;
+        this.clearInterval();
+      }
+    }
   }
 };
 </script>
@@ -98,7 +106,7 @@ input[type='range']::-webkit-slider-thumb {
   height: 10px;
   cursor: pointer;
   background: #ffff;
-  box-shadow: -20vw 0 0 20vw #ff4587;
+  box-shadow: -30vw 0 0 30vw #ff4587;
 }
 
 /** FF*/
