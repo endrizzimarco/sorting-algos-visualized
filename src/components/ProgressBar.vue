@@ -1,5 +1,5 @@
 <template lang="pug">
-.flex.items-center.max-w-2xl.h-9.mx-4.mt-6.bg-light-navy.rounded.shadow-lg(class='md:mx-auto')
+.flex.items-center.max-w-2xl.h-9.m-4.bg-light-navy.rounded.shadow-lg(class='md:mx-auto')
   img.h-6.mx-2.ml-5.cursor-pointer(src='@/assets/fast-back.png', @click='firstStep')
   img.h-6.mx-2.cursor-pointer(src='@/assets/back.png', @click='prevStep')
   img.h-6.mx-2.cursor-pointer(

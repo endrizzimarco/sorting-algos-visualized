@@ -1,5 +1,5 @@
 <template lang="pug">
-nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-3.shadow-xl
+nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-2.shadow-xl
   // Yummy burger fix it someday
   input#menu-btn.menu-btn.hidden(type='checkbox')
   label.menu-icon.cursor-pointer.px-2.py-4(class='md:hidden', for='menu-btn')

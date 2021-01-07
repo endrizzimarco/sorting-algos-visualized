@@ -1,5 +1,5 @@
 <template lang="pug">
-.flex.justify-center.w-full.px-4
+.flex.justify-center.w-full.p-6
   transition-group(name='list-complete')
     .w-40.transition.shadow-lg(
       v-for='(number, index) in $store.getters.slicedArray',
