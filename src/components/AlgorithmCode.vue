@@ -1,6 +1,6 @@
 <template lang="pug">
 .flex.w-full
-  .flex.flex-col.m-auto.text-left
+  .flex.flex-col.m-5.text-left.w-full(class='lg:w-auto lg:m-auto')
     .mb-2.p-1.rounded-md.shadow-lg.bg-light-pink
       p.ml-3.whitespace-pre {{ currStep.explanation }}
     .px-5.py-2.bg-indigo-200.rounded-lg.shadow-lg

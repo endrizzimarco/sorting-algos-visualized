@@ -1,13 +1,13 @@
 <template lang="pug">
-.grid.grid-cols-8
+.grid.grid-cols-8.min-h-screen
   .col-span-full
     Header
   .col-span-full
     AlgorithmInfo
-  .col-span-full(class='md:col-span-5')
+  .col-span-full(class='lg:col-span-5')
     AlgorithmLegend
     Array
-  .col-span-full(class='md:col-span-3')
+  .col-span-full(class='lg:col-span-3')
     AlgorithmCode
   .col-span-full
     ProgressBar
