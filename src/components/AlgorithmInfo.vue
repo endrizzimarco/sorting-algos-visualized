@@ -1,7 +1,7 @@
 <template lang="pug">
 .flex.flex-wrap.my-3.pb-6.mx-5.text-left
   .flex.w-full.pb-5
-    h1.text-3xl Now showing: {{ algorithm }}
+    h1.text-2xl(class='sm:text-3xl') Now showing: {{ algorithm }}
     svg.ml-1.mt-2.h-5.w-5.cursor-pointer(
       @click='toggle = !toggle',
       class='lg:hidden',

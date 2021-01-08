@@ -11,6 +11,9 @@ module.exports = {
       },
       transitionDuration: {
         '2000': '2000ms'
+      },
+      screens: {
+        'overflow-fix': { min: '767px', max: '890px' }
       }
     }
   },

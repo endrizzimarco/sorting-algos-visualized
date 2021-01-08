@@ -2,9 +2,10 @@
 .border-t(class='md:border-none')
 .flex.relative.rounded-xl.text-xl.px-4.py-3.cursor-pointer.outline-none.transition.duration-200(
   @click='active = !active',
-  :class='[active && value ? "hover:bg-indigo-600 bg-indigo-600" : "hover:bg-indigo-400"]',
+  @blur='active = false',
   tabindex='1',
-  @blur='active = false'
+  :class='[active && value ? "hover:bg-indigo-600 bg-indigo-600" : "hover:bg-indigo-400"]',
+  class='overflow-fix:px-1'
 ) <slot></slot>
   //- Dropdown stuff
   .dropdown(v-if='value')

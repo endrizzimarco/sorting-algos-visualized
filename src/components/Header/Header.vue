@@ -6,7 +6,7 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-2.shadow-xl
     span.navicon.flex.relative
   // Title
   .flex.py-3.ml-4(class='md:mr-6')
-    span.font-semibold.text-xl.tracking-tight(class='md:text-2xl') Sorting Algorithms Visualizer
+    span.font-semibold.text-xl.tracking-tight(class='sm:text-2xl') Sorting Algorithms Visualizer
   // Content
   .menu.flex.flex-grow.w-full.justify-start(class='md:w-auto xl:justify-end')
     Attribute(:value='algorithm', :items='options.algorithms') Algorithms
