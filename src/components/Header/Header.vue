@@ -9,41 +9,49 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-2.shadow-xl
     span.font-semibold.text-xl.tracking-tight(class='md:text-2xl') Sorting Algorithms Visualizer
   // Content
   .menu.flex.flex-grow.w-full.justify-start(class='md:w-auto xl:justify-end')
-    Attribute(:value='$store.state.algorithm', :items='$store.state.options.algorithms') Algorithms
+    Attribute(:value='algorithm', :items='options.algorithms') Algorithms
     Attribute(:value='"Insert " + size + " numbers"', :input='true') Numbers
-    Attribute(:value='$store.state.size', :items='$store.state.options.sizes', @selected='size = $event') Size: {{ size }}
-    Attribute(:value='$store.state.speed', :items='$store.state.options.speeds', @selected='speed = $event') Speed: {{ speed }}
-    div(@click='$store.commit("generateNumbers")')
+    Attribute(:value='size', :items='options.sizes', @selected='localSize = $event') Size: {{ localSize }}
+    Attribute(:value='speed', :items='options.speeds', @selected='localSpeed = $event') Speed: {{ localSpeed }}
+    div(@click='generateNumbers()')
       Attribute Shuffle
     button.bg-sky-blue.text-2xl.px-6.py-2.rounded.transition.duration-500(
-      @click='$store.commit("changeOptions", payload)',
+      @click='changeOptions(localOptions)',
       class='hover:bg-dark-sky-blue focus:outline-none md:ml-4'
     ) Visualize!
-    p {{ numbers }}
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 import Attribute from '@/components/Header/Attribute.vue';
 
 export default {
   components: { Attribute },
+
   data() {
     return {
-      algorithm: '',
-      numbers: '',
-      size: 0,
-      speed: ''
+      localAlgo: '',
+      localNumbers: '',
+      localSize: 0,
+      localSpeed: ''
     };
   },
-  computed: {
-    payload() {
-      return { algo: this.algo, size: this.size, speed: this.speed };
-    }
+
+  methods: {
+    ...mapMutations(['generateNumbers', 'changeOptions'])
   },
-  mounted() {
-    this.algorithm = this.$store.state.algorithm;
-    this.size = this.$store.state.size;
-    this.speed = this.$store.state.speed;
+
+  computed: {
+    localOptions() {
+      return { algo: this.localAlgo, numbers: this.localNumbers, size: this.localSize, speed: this.localSpeed };
+    },
+    ...mapState(['algorithm', 'numbers', 'size', 'speed', 'options'])
+  },
+
+  beforeMount() {
+    this.localAlgo = this.algorithm;
+    this.localSize = this.size;
+    this.localSpeed = this.speed;
   }
 };
 </script>

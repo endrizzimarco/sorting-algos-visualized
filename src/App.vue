@@ -30,7 +30,7 @@ export default {
     AlgorithmCode,
     ProgressBar
   },
-  beforeMount: function () {
+  beforeMount() {
     this.$store.commit('generateNumbers');
   }
 };

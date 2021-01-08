@@ -17,7 +17,7 @@ export default {
   computed: {
     currStep() {
       if (this.stepIndex == 0) {
-        return { codeBlock: 'block1', explanation: 'bojo\nbim bim bom bom' };
+        return { codeBlock: 'block1', explanation: 'Set n to array length\nEnter do while loop' };
       }
       return this.steps[this.stepIndex - 1];
     },
