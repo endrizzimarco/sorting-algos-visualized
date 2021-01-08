@@ -1,8 +1,8 @@
 <template lang="pug">
 .border-t(class='md:border-none')
 .flex.relative.rounded-xl.text-xl.px-4.py-3.cursor-pointer.outline-none.transition.duration-200(
-  @click='active = !active',
-  @blur='active = false',
+  @click='!input ? (active = !active) : (active = true)',
+  @blur='!input ? (active = false) : ""',
   tabindex='1',
   :class='[active && value ? "hover:bg-indigo-600 bg-indigo-600" : "hover:bg-indigo-400"]',
   class='overflow-fix:px-1'
@@ -22,9 +22,22 @@
         clip-rule='evenodd'
       )
     //- Content
-    .absolute.left-0.mt-10.w-full.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5(v-show='active')
+    .fixed.top-96.left-0.w-full.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5(
+      v-show='active',
+      class='md:absolute md:top-16'
+    )
+      div(v-if='input')
+        //- Dropdown input element
+        input.py-0.px-2.border-gray-900.shadow-none.rounded-md.border-1.text-gray-600(
+          @blur='active = false',
+          @input='$emit("selected", intNumbers)',
+          v-model='currentNums',
+          :placeholder='value',
+          class='focus:outline-none focus:ring focus:border-blue-300',
+          ref='numsInput'
+        ) 
       //- Dropdown select element
-      .py-1(role='menu', aria-orientation='vertical', aria-labelledby='options-menu')
+      .py-1(v-else, role='menu', aria-orientation='vertical', aria-labelledby='options-menu')
         .block.px-4.py-2.text-sm.text-gray-700(
           v-for='item in items',
           @click='$emit("selected", item)',
@@ -32,12 +45,6 @@
           :class='[item == value ? "bg-gray-200" : ""]',
           role='menuitem'
         ) {{ item }}
-      //- Dropdown input element
-      input.px-2.border-gray-700.rounded-md.text-gray-600(
-        v-if='input && active',
-        @input='$emit("input", $event.target.value)',
-        class='focus:outline-none focus:ring focus:border-blue-300'
-      ) 
 </template>
 
 <script>
@@ -52,8 +59,21 @@ export default {
 
   data() {
     return {
-      active: false
+      active: false,
+      currentNums: this.items
     };
+  },
+
+  computed: {
+    intNumbers() {
+      return this.currentNums.split(/[ ,]+/).map(x => parseInt(x));
+    }
+  },
+
+  updated() {
+    if (this.input) {
+      this.$refs.numsInput.focus();
+    }
   }
 };
 </script>

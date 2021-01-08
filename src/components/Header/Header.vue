@@ -10,10 +10,16 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-2.shadow-xl
   // Content
   .menu.flex.flex-grow.w-full.justify-start(class='md:w-auto xl:justify-end')
     Option(:value='algorithm', :items='options.algorithms') Algorithms
-    Option(:value='"Insert " + size + " numbers"', :input='true') Numbers
+    Option(
+      :key='reloadWithProp',
+      :value='"Insert " + size + " numbers"',
+      :items='localNumbers',
+      :input='true',
+      @selected='localNumbers = $event'
+    ) Numbers
     Option(:value='size', :items='options.sizes', @selected='localSize = $event') Size: {{ localSize }}
     Option(:value='speed', :items='options.speeds', @selected='localSpeed = $event') Speed: {{ localSpeed }}
-    div(@click='generateNumbers()')
+    div(@click='generateNumbers([])')
       Option Shuffle
     button.bg-sky-blue.text-2xl.px-6.py-2.rounded.transition.duration-500(
       @click='changeOptions(localOptions)',
@@ -22,7 +28,7 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-2.shadow-xl
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 import Option from '@/components/Header/Option.vue';
 
 export default {
@@ -31,9 +37,10 @@ export default {
   data() {
     return {
       localAlgo: '',
-      localNumbers: '',
+      localNumbers: [],
       localSize: 0,
-      localSpeed: ''
+      localSpeed: '',
+      reloadWithProp: 0
     };
   },
 
@@ -43,15 +50,30 @@ export default {
 
   computed: {
     localOptions() {
-      return { algo: this.localAlgo, numbers: this.localNumbers, size: this.localSize, speed: this.localSpeed };
+      return {
+        algo: this.localAlgo,
+        numbers: this.localNumbers,
+        size: this.localSize,
+        speed: this.localSpeed
+      };
     },
-    ...mapState(['algorithm', 'numbers', 'size', 'speed', 'options'])
+    ...mapState(['algorithm', 'numbers', 'size', 'speed', 'options']),
+    ...mapGetters(['slicedArray'])
   },
 
   beforeMount() {
     this.localAlgo = this.algorithm;
     this.localSize = this.size;
     this.localSpeed = this.speed;
+    this.slicedArray.forEach(x => this.localNumbers.push(x.value));
+  },
+
+  watch: {
+    numbers() {
+      this.localNumbers = [];
+      this.reloadWithProp += 1;
+      this.slicedArray.forEach(x => this.localNumbers.push(x.value));
+    }
   }
 };
 </script>

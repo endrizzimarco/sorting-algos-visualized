@@ -25,13 +25,14 @@ const store = createStore({
     *******************************
     */
     // Generate array for visualization
-    generateNumbers(state) {
+    generateNumbers(state, payload) {
       state.numbers = [];
       state.numbersSnapshot = [];
+
       for (let i = 0; i < 8; i++) {
         let cell = {
           id: i,
-          value: Math.floor(Math.random() * 100),
+          value: payload[i] ? payload[i] : Math.floor(Math.random() * 100),
           color: 'bg-red-300'
         };
         state.numbers.push(cell);
@@ -52,6 +53,8 @@ const store = createStore({
       state.algo = payload.algo;
       state.size = payload.size;
       state.speed = payload.speed;
+
+      this.commit('generateNumbers', payload.numbers);
       this.commit('resetVisualizer');
     },
     setInterval(state, payload) {
