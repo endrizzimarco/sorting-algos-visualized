@@ -1,11 +1,11 @@
 <template lang="pug">
 .border-t(class='md:border-none')
-.flex.relative.rounded-xl.text-xl.px-4.py-3.cursor-pointer.outline-none.transition.duration-200(
+.flex.rounded-xl.text-xl.px-4.py-3.cursor-pointer.outline-none.transition.duration-200(
   @click='!input ? (active = !active) : (active = true)',
   @blur='!input ? (active = false) : ""',
   tabindex='1',
   :class='[active && value ? "hover:bg-indigo-600 bg-indigo-600" : "hover:bg-indigo-400"]',
-  class='overflow-fix:px-1'
+  class='overflow-fix:px-1 md:relative'
 ) <slot></slot>
   //- Dropdown stuff
   .dropdown(v-if='value')
@@ -22,22 +22,24 @@
         clip-rule='evenodd'
       )
     //- Content
-    .fixed.top-96.left-0.w-full.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5(
-      v-show='active',
-      class='md:absolute md:top-16'
-    )
+    .absolute.top-96.left-0.w-full(v-show='active', class='md:top-16')
       div(v-if='input')
         //- Dropdown input element
-        input.py-0.px-2.border-gray-900.shadow-none.rounded-md.border-1.text-gray-600(
+        input.rounded-md.text-gray-600.w-full(
           @blur='active = false',
           @input='$emit("selected", intNumbers)',
           v-model='currentNums',
           :placeholder='value',
-          class='focus:outline-none focus:ring focus:border-blue-300',
+          class='focus:outline-none focus:ring focus:border-blue-300 md:w-auto',
           ref='numsInput'
         ) 
       //- Dropdown select element
-      .py-1(v-else, role='menu', aria-orientation='vertical', aria-labelledby='options-menu')
+      .py-1.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5(
+        v-else,
+        role='menu',
+        aria-orientation='vertical',
+        aria-labelledby='options-menu'
+      )
         .block.px-4.py-2.text-sm.text-gray-700(
           v-for='item in items',
           @click='$emit("selected", item)',
