@@ -9,12 +9,12 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-2.shadow-xl
     span.font-semibold.text-xl.tracking-tight(class='sm:text-2xl') Sorting Algorithms Visualizer
   // Content
   .menu.flex.flex-grow.w-full.justify-start(class='md:w-auto xl:justify-end')
-    Attribute(:value='algorithm', :items='options.algorithms') Algorithms
-    Attribute(:value='"Insert " + size + " numbers"', :input='true') Numbers
-    Attribute(:value='size', :items='options.sizes', @selected='localSize = $event') Size: {{ localSize }}
-    Attribute(:value='speed', :items='options.speeds', @selected='localSpeed = $event') Speed: {{ localSpeed }}
+    Option(:value='algorithm', :items='options.algorithms') Algorithms
+    Option(:value='"Insert " + size + " numbers"', :input='true') Numbers
+    Option(:value='size', :items='options.sizes', @selected='localSize = $event') Size: {{ localSize }}
+    Option(:value='speed', :items='options.speeds', @selected='localSpeed = $event') Speed: {{ localSpeed }}
     div(@click='generateNumbers()')
-      Attribute Shuffle
+      Option Shuffle
     button.bg-sky-blue.text-2xl.px-6.py-2.rounded.transition.duration-500(
       @click='changeOptions(localOptions)',
       class='hover:bg-dark-sky-blue focus:outline-none md:ml-4'
@@ -23,10 +23,10 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-2.shadow-xl
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import Attribute from '@/components/Header/Attribute.vue';
+import Option from '@/components/Header/Option.vue';
 
 export default {
-  components: { Attribute },
+  components: { Option },
 
   data() {
     return {
