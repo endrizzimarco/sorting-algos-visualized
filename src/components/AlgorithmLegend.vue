@@ -1,25 +1,32 @@
 <template lang="pug">
-.flex.justify-around.mb-5.max-w-2xl.mx-auto
+.flex.justify-around.max-w-2xl.mx-5(class='sm:mt-5 sm:mx-auto')
   .flex
-    .w-6.h-6.bg-red-200.rounded 
-    p.pl-2 Unsorted
+    .legend.bg-red-200
+    p.legendName Unsorted
   .flex
-    .w-6.h-6.bg-green-200.rounded 
-    p.pl-2 Sorted
+    .legend.bg-green-200
+    p.legendName Sorted
   .flex
-    .w-6.h-6.bg-yellow-200.rounded 
-    p.pl-2 Comparing
-  .flex(v-if='isPivotAlgorithm')
-    .w-6.h-6.bg-purple-300.rounded 
-    p.pl-1 Pivot
+    .legend.bg-yellow-200
+    p.legendName Comparing
+  .flex(v-if='isRequired')
+    .legend.bg-purple-200
+    p.legendName Pivot
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   computed: {
-    isPivotAlgorithm() {
-      return this.$store.state.algorithm == 'Quicksort';
-    }
+    isRequired() {
+      return this.algorithm == ('Quicksort' || 'Insertion Sort');
+    },
+    legendName() {
+      let name = this.algorithm == 'Quicksort' ? 'Pivot' : 'Current';
+      return name;
+    },
+    ...mapState(['algorithm'])
   }
 };
 </script>
