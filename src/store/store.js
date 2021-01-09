@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import algoData from './algoData.js';
+import { bubbleSort } from './algoImplementation.js';
 
 const store = createStore({
   state: {
@@ -12,12 +13,13 @@ const store = createStore({
     stepIndex: 0,
     interval: null,
     options: {
-      algorithms: ['Bubble Sort', 'Bogus Sort', 'Hamlalaa'],
+      algorithms: ['Bubble Sort', 'Selection Sort', 'Insertion Sort'],
       sizes: [4, 5, 6, 7, 8],
       speeds: ['Slow', 'Average', 'Fast']
     },
     algoData: algoData
   },
+
   mutations: {
     /* 
     *******************************
@@ -28,12 +30,15 @@ const store = createStore({
     generateNumbers(state, payload) {
       state.numbers = [];
       state.numbersSnapshot = [];
+      function validRange(x) {
+        return x >= 0 && x <= 13;
+      }
 
       for (let i = 0; i < 8; i++) {
         let cell = {
           id: i,
-          value: payload[i] ? payload[i] : Math.floor(Math.random() * 100),
-          color: 'bg-red-300'
+          value: payload[i] && validRange(payload[i]) ? payload[i] : Math.ceil(Math.random() * 13),
+          color: 'bg-opacity-0'
         };
         state.numbers.push(cell);
         state.numbersSnapshot.push(cell);
@@ -50,7 +55,7 @@ const store = createStore({
     },
     // Change settings for visualization and reset to beginning
     changeOptions(state, payload) {
-      state.algo = payload.algo;
+      state.algorithm = payload.algo;
       state.size = payload.size;
       state.speed = payload.speed;
 
@@ -91,78 +96,30 @@ const store = createStore({
       let temp = state.numbers[payload[1]];
       state.numbers[payload[1]] = state.numbers[payload[0]];
       state.numbers[payload[0]] = temp;
-      state.numbers[payload[0]].color = state.numbers[payload[1]].color = 'bg-red-300';
+      state.numbers[payload[0]].color = state.numbers[payload[1]].color = 'bg-opacity-0';
     },
     // Set yellow backgrounds of array items based on indexes
     compare(state, payload) {
       if (state.numbers[payload[2]]) {
-        state.numbers[payload[2]].color = 'bg-red-300';
+        state.numbers[payload[2]].color = 'bg-opacity-0';
       }
-      state.numbers[payload[0]].color = state.numbers[payload[1]].color = 'bg-yellow-300';
+      state.numbers[payload[0]].color = state.numbers[payload[1]].color = 'bg-yellow-200 bg-opacity-80';
     },
     done(state, payload) {
-      state.numbers[payload[0]].color = 'bg-green-300';
+      state.numbers[payload[0]].color = 'bg-green-300 bg-opacity-80';
       if (state.numbers[payload[1]]) {
-        state.numbers[payload[1]].color = 'bg-red-300';
+        state.numbers[payload[1]].color = 'bg-opacity-0';
       }
     },
     pass: () => 0,
-    //TODO: Put this in another file
-    bubbleSort(state) {
-      let arrayCopy = JSON.parse(JSON.stringify(state.numbers)).slice(0, state.size);
-      let n = state.size;
-      let swapped;
-      do {
-        swapped = false;
-        state.steps.push({
-          mutation: 'pass',
-          codeBlock: 'block2',
-          explanation: 'Entering for loop\nSet swapped flag to false'
-        });
-        for (let i = 1; i < n; i++) {
-          state.steps.push({
-            mutation: 'compare',
-            payload: [i - 1, i, i - 2],
-            codeBlock: 'block3',
-            explanation: `Comparing the values ${arrayCopy[i - 1].value} and ${
-              arrayCopy[i].value
-            }\nIf the first value is bigger, swap them`
-          });
-          if (arrayCopy[i - 1].value > arrayCopy[i].value) {
-            state.steps.push({
-              mutation: 'swap',
-              payload: [i - 1, i],
-              codeBlock: `block4`,
-              explanation: `Swapping ${arrayCopy[i - 1].value} and ${arrayCopy[i].value}\nSet swapped flag to true`
-            });
-            let temp = arrayCopy[i - 1];
-            arrayCopy[i - 1] = arrayCopy[i];
-            arrayCopy[i] = temp;
-            swapped = true;
-          }
-        }
-        state.steps.push({
-          mutation: 'done',
-          payload: [n - 1, n - 2],
-          codeBlock: 'block5',
-          explanation: `${arrayCopy[n - 1].value} is sorted\nAs swap flag is set to true, loop again`
-        });
-        n -= 1;
-      } while (swapped);
-      while (n) {
-        state.steps.push({
-          mutation: 'done',
-          payload: [n - 1, n - 2],
-          codeBlock: 'block5',
-          explanation:
-            n > 1
-              ? `${arrayCopy[n - 1].value} is sorted\nAs swap flag is set to true, loop again`
-              : `As swap flag is set to false, end while loop\nBubble sort is now completed`
-        });
-        n--;
-      }
-    }
+    /* 
+    *****************************************************
+      ALGORITHMS IMPLEMENTATION ./algoImplementation.js
+    *****************************************************
+    */
+    bubbleSort: state => bubbleSort(state)
   },
+
   getters: {
     // Show array based on size
     slicedArray: state => state.numbers.slice(0, state.size),
