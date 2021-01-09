@@ -22,7 +22,7 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-2.shadow-xl
     div(@click='generateNumbers([])')
       Option Shuffle
     button.bg-sky-blue.text-2xl.px-6.py-2.rounded.transition.duration-500(
-      @click='changeOptions(localOptions)',
+      @click='handleClick',
       class='hover:bg-dark-sky-blue focus:outline-none md:ml-4'
     ) Visualize!
 </template>
@@ -45,6 +45,10 @@ export default {
   },
 
   methods: {
+    handleClick() {
+      this.changeOptions(this.localOptions);
+      document.getElementById('menu-btn').checked = false;
+    },
     ...mapMutations(['generateNumbers', 'changeOptions'])
   },
 

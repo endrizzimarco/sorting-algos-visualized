@@ -34,10 +34,10 @@
     p {{ currAlgoData.text }}
     p.mt-2
       | Read more at:&nbsp
-      a.underline.text-blue-600.cursor-pointer.inline-block(
+      a.pb-5.underline.text-blue-600.cursor-pointer.inline-block(
         :href='currAlgoData.wikipedia',
         target='_blank',
-        class='hover:text-blue-800 visited:text-purple-600'
+        class='sm:pb-0 hover:text-blue-800 visited:text-purple-600'
       ) {{ currAlgoData.wikipedia }}
 </template>
 
@@ -51,7 +51,7 @@ export default {
     };
   },
   methods: {
-    togglOnResize() {
+    toggleOnResize() {
       const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
       if (width > 1024) {
         this.toggle = true;
