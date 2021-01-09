@@ -5,10 +5,10 @@
       .flex.justify-center.h-0.pb-130-p.border.rounded-md.border-gray-300.transition.duration-500(
         :class='[numbers[index].color]'
       ) 
-        .suit.absolute.top-0.left-0.pl-10-p(:class='responsiveSize') ♠
+        .suit.absolute.top-0.left-0(:class='responsiveSize') ♠
         .font-light.pt-45-p(:class='responsiveSize') 
           | {{ cardValue(number.value) }}
-        .suit.absolute.bottom-0.right-0.pr-10-p(:class='responsiveSize') ♠
+        .suit.absolute.bottom-0.right-0(:class='responsiveSize') ♠
 </template>
 
 <script>
@@ -60,7 +60,9 @@ export default {
   transform: translateX(30px);
   position: relative;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p&family=Tinos:ital@1&display=swap');
 .suit {
-  font-family: 'Segoe UI Symbol';
+  font-family: 'M PLUS 1p', sans-serif;
 }
 </style>
