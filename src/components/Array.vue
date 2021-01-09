@@ -5,10 +5,10 @@
       .flex.justify-center.h-0.pb-130-p.border.rounded-md.border-gray-300.transition.duration-500(
         :class='[numbers[index].color]'
       ) 
-        .absolute.top-0.left-0.pl-10-p(:class='responsiveSize') ♠
+        .suit.absolute.top-0.left-0.pl-10-p(:class='responsiveSize') ♠
         .font-light.pt-45-p(:class='responsiveSize') 
           | {{ cardValue(number.value) }}
-        .absolute.bottom-0.right-0.pr-10-p(:class='responsiveSize') ♠
+        .suit.absolute.bottom-0.right-0.pr-10-p(:class='responsiveSize') ♠
 </template>
 
 <script>
@@ -59,5 +59,8 @@ export default {
   transition: all 0.4s ease;
   transform: translateX(30px);
   position: relative;
+}
+.suit {
+  font-family: 'Segoe UI Symbol';
 }
 </style>
