@@ -1,7 +1,7 @@
 <template lang="pug">
 .flex.justify-around.max-w-2xl.mx-5(class='sm:mt-5 sm:mx-auto')
   .flex
-    .legend.bg-red-200
+    .legend.border.border-gray-300
     p.legendName Unsorted
   .flex
     .legend.bg-green-200

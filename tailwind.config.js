@@ -13,7 +13,13 @@ module.exports = {
         '2000': '2000ms'
       },
       screens: {
+        xs: { min: '350px', max: '640px' },
         'overflow-fix': { min: '767px', max: '890px' }
+      },
+      padding: {
+        '130-p': '130%',
+        '45-p': '45%',
+        '10-p': '10%'
       }
     }
   },
