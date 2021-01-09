@@ -1,5 +1,5 @@
 <template lang="pug">
-.grid.grid-cols-8.min-h-screen
+.grid.grid-cols-8(class='sm:min-h-screen')
   .col-span-full
     Header
   .col-span-full

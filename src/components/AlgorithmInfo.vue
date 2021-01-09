@@ -1,5 +1,5 @@
 <template lang="pug">
-.flex.flex-wrap.my-3.pb-6.mx-5.text-left
+.flex.flex-wrap.my-3.mx-5.text-left(class='md:pb-6')
   .flex.w-full.pb-5
     h1.text-2xl(class='sm:text-3xl') Now showing: {{ algorithm }}
     svg.ml-1.mt-2.h-5.w-5.cursor-pointer(
@@ -29,12 +29,12 @@
       tbody
         tr(style='line-height: 2.5rem')
           td(v-for='complexity in currAlgoData.complexities')
-            code(:class='complexityColor(complexity)') {{ complexity }}
+            code.px-1.py-1.rounded.text-sm(:class='complexityColor(complexity)', class='sm:px-3 sm:text-base') {{ complexity }}
   .w-full(v-show='toggle', class='lg:w-6/12')
     p {{ currAlgoData.text }}
     p.mt-2
       | Read more at:&nbsp
-      a.underline.text-blue-600.cursor-pointer(
+      a.underline.text-blue-600.cursor-pointer.inline-block(
         :href='currAlgoData.wikipedia',
         target='_blank',
         class='hover:text-blue-800 visited:text-purple-600'
@@ -51,7 +51,7 @@ export default {
     };
   },
   methods: {
-    handleResize() {
+    togglOnResize() {
       const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
       if (width > 1024) {
         this.toggle = true;
@@ -59,7 +59,6 @@ export default {
     },
     complexityColor(complexity) {
       return {
-        'px-3 py-1 rounded': true,
         'bg-green-300': /.\(1\)/gm.test(complexity),
         'bg-yellow-300': /.\(n\)/gm.test(complexity),
         'bg-yellow-500': /.\(n log\(n\)\)/gm.test(complexity),
@@ -72,7 +71,7 @@ export default {
     ...mapGetters(['currAlgoData'])
   },
   beforeMount() {
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.toggleOnResize);
   }
 };
 </script>
@@ -89,6 +88,14 @@ th {
   border: 1px solid #ddd9ff;
   background-image: linear-gradient(to bottom, #fff, #efedff);
   font-weight: normal;
+  font-size: 0.85em;
+}
+
+/* th(class='sm:text-base) */
+@media (min-width: 640px) {
+  th {
+    font-size: 1em;
+  }
 }
 
 table {
