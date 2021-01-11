@@ -1,5 +1,5 @@
 <template lang="pug">
-.flex.w-full
+.flex.h-full.content-center 
   .flex.flex-col.m-auto.text-left.w-auto(class='sm:mx-5 sm:w-full lg:w-auto lg:m-auto')
     .mb-2.p-1.rounded-md.shadow-lg.bg-light-pink
       p.ml-3.whitespace-pre {{ currStep.explanation }}

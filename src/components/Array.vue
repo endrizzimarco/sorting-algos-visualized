@@ -41,11 +41,7 @@ export default {
       };
     },
     responsiveSize() {
-      return [
-        this.slicedArray.length < 6
-          ? 'text-lg xs:text-2xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl'
-          : 'text-xs xs: sm:text-3xl md:text-3xl lg:text-2xl xl:text-3xl'
-      ];
+      return [this.slicedArray.length < 6 ? 'text-lg xs:text-2xl sm:text-4xl' : 'text-xs xs: sm:text-2xl xl:text-3xl'];
     },
     ...mapState(['numbers', 'speed']),
     ...mapGetters(['slicedArray'])
