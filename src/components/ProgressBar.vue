@@ -32,7 +32,11 @@ export default {
       }
     },
     commitStep(stepIndex) {
-      this.$store.commit(this.steps[stepIndex].mutation, this.steps[stepIndex].payload);
+      let mutation = this.steps[stepIndex].mutation;
+      let payload = this.steps[stepIndex].payload;
+      if (mutation) {
+        this.$store.commit(mutation, payload);
+      }
     },
     nextStep() {
       if (this.stepIndex <= this.steps.length - 1) {

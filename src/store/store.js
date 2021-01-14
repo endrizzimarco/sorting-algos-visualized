@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import algoData from './algoData.js';
-import { bubbleSort } from './algoImplementation.js';
+import { bubbleSort, selectionSort } from './algoImplementation.js';
 
 const store = createStore({
   state: {
@@ -51,7 +51,15 @@ const store = createStore({
       state.steps = [];
       this.commit('clearInterval');
       this.commit('undoMutations');
-      this.commit('bubbleSort');
+
+      function camelize(str) {
+        return str
+          .replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+            return index === 0 ? word.toLowerCase() : word.toUpperCase();
+          })
+          .replace(/\s+/g, '');
+      }
+      this.commit(camelize(state.algorithm));
     },
     // Change settings for visualization and reset to beginning
     changeOptions(state, payload) {
@@ -92,32 +100,43 @@ const store = createStore({
     ************************************
     */
     // Swap two numbers in array based on payload indexes
+    highlight(state, payload) {
+      for (let i = 0; i < payload.length; i++) {
+        let cardIndex = payload[i].index;
+        let card = state.numbers[cardIndex];
+
+        switch (payload[i].color) {
+          case 'green':
+            card.color = 'bg-green-300 bg-opacity-80';
+            break;
+          case 'yellow':
+            card.color = 'bg-yellow-200 bg-opacity-80';
+            break;
+          case 'purple':
+            card.color = 'bg-purple-300 bg-opacity-80';
+            break;
+          default:
+            card.color = 'bg-opacity-0';
+        }
+      }
+    },
     swap(state, payload) {
-      let temp = state.numbers[payload[1]];
-      state.numbers[payload[1]] = state.numbers[payload[0]];
-      state.numbers[payload[0]] = temp;
-      state.numbers[payload[0]].color = state.numbers[payload[1]].color = 'bg-opacity-0';
+      let card1 = payload[0].index;
+      let card2 = payload[1].index;
+
+      let temp = state.numbers[card2];
+      state.numbers[card2] = state.numbers[card1];
+      state.numbers[card1] = temp;
+
+      this.commit('highlight', payload);
     },
-    // Set yellow backgrounds of array items based on indexes
-    compare(state, payload) {
-      if (state.numbers[payload[2]]) {
-        state.numbers[payload[2]].color = 'bg-opacity-0';
-      }
-      state.numbers[payload[0]].color = state.numbers[payload[1]].color = 'bg-yellow-200 bg-opacity-80';
-    },
-    done(state, payload) {
-      state.numbers[payload[0]].color = 'bg-green-300 bg-opacity-80';
-      if (state.numbers[payload[1]]) {
-        state.numbers[payload[1]].color = 'bg-opacity-0';
-      }
-    },
-    pass: () => 0,
     /* 
     *****************************************************
       ALGORITHMS IMPLEMENTATION ./algoImplementation.js
     *****************************************************
     */
-    bubbleSort: state => bubbleSort(state)
+    bubbleSort: state => bubbleSort(state),
+    selectionSort: state => selectionSort(state)
   },
 
   getters: {
