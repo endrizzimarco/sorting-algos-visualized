@@ -32,6 +32,12 @@ export default {
           The biggest advantage of using selection sort is that we only requires maximumn swaps (memory write)
           where n is the length of the input. This can be very important if memory write operation is significantly
           more expensive than memory read operation, such as with Flash memory, where every write lessens the lifespan of the memory. `,
-    code: {}
+    code: {
+      block1: 'for i = 0 to length(array)-1',
+      block2: '  minIndex = i\n  for j=i+1 to length(array)',
+      block3: '    if currentElement < min',
+      block4: '      minIndex = currentElementIndex',
+      block5: '  swap(minimum, firstUnsorted)'
+    }
   }
 };

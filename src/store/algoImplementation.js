@@ -1,5 +1,5 @@
 function bubbleSort(state) {
-  let arrayCopy = JSON.parse(JSON.stringify(state.cards)).slice(0, state.size);
+  let cardsCopy = JSON.parse(JSON.stringify(state.cards)).slice(0, state.size);
   let n = state.size;
   let swapped;
   do {
@@ -17,23 +17,23 @@ function bubbleSort(state) {
           ...(i > 1 ? [{ index: i - 2, color: '' }] : [])
         ],
         codeBlock: 'block3',
-        explanation: `Comparing the values ${arrayCopy[i - 1].value} and ${
-          arrayCopy[i].value
+        explanation: `Comparing the values ${cardsCopy[i - 1].value} and ${
+          cardsCopy[i].value
         }\nIf the first value is bigger, swap them`
       });
-      if (arrayCopy[i - 1].value > arrayCopy[i].value) {
+      if (cardsCopy[i - 1].value > cardsCopy[i].value) {
         state.steps.push({
           mutation: 'swap',
           payload: [
             { index: i - 1, color: '' },
-            { index: i, color: arrayCopy[i - 1].value == arrayCopy[i].value ? 'green' : '' }
+            { index: i, color: cardsCopy[i - 1].value == cardsCopy[i].value ? 'green' : '' }
           ],
           codeBlock: `block4`,
-          explanation: `Swapping ${arrayCopy[i - 1].value} and ${arrayCopy[i].value}\nSet swapped flag to true`
+          explanation: `Swapping ${cardsCopy[i - 1].value} and ${cardsCopy[i].value}\nSet swapped flag to true`
         });
-        let temp = arrayCopy[i - 1];
-        arrayCopy[i - 1] = arrayCopy[i];
-        arrayCopy[i] = temp;
+        let temp = cardsCopy[i - 1];
+        cardsCopy[i - 1] = cardsCopy[i];
+        cardsCopy[i] = temp;
         swapped = true;
       }
     }
@@ -46,7 +46,7 @@ function bubbleSort(state) {
         ],
         codeBlock: 'block5',
         explanation:
-          arrayCopy[n - 1].value +
+          cardsCopy[n - 1].value +
           ' "bubbled" to the top and is now sorted\nAs a swap occurred, start from the beginning'
       });
     }
@@ -67,56 +67,71 @@ function bubbleSort(state) {
 }
 
 function selectionSort(state) {
-  let arrayCopy = JSON.parse(JSON.stringify(state.cards)).slice(0, state.size);
+  let cardsCopy = JSON.parse(JSON.stringify(state.cards)).slice(0, state.size);
   let n = state.size;
   state.steps.push({
-    mutation: 'pass',
     codeBlock: 'block1',
     explanation: 'Entering first for loop\nSkip first card as it is already sorted'
   });
   for (let i = 0; i < n - 1; i++) {
     let min = i;
     state.steps.push({
-      mutation: 'current',
+      mutation: 'highlight',
+      payload: [{ index: min, color: 'purple' }],
       codeBlock: 'block2',
-      payload: [min],
       explanation: `Find the min element in unsorted subarray\nCurrent minIndex = ${i}`
     });
     for (let j = i + 1; j < n; j++) {
-      let resetColor = min == j - 1 ? '' : j - 1;
       state.steps.push({
-        mutation: 'compare',
+        mutation: 'highlight',
+        payload: [{ index: j, color: 'yellow' }, ...(j > 1 && j - 1 != min ? [{ index: j - 1, color: '' }] : [])],
         codeBlock: 'block3',
-        payload: [j, '', resetColor],
-        explanation: `Comparing the values ${arrayCopy[min].value} and ${arrayCopy[j].value}\nIf current value is smaller, set new minIndex`
+        explanation: `Comparing the values ${cardsCopy[min].value} and ${cardsCopy[j].value}\nIf current value is smaller, set new minIndex`
       });
-      if (arrayCopy[j].value < arrayCopy[min].value) {
+      if (cardsCopy[j].value < cardsCopy[min].value) {
         state.steps.push({
-          mutation: 'hack',
+          mutation: 'highlight',
+          payload: [
+            { index: min, color: '' },
+            { index: j, color: 'purple' }
+          ],
           codeBlock: 'block4',
-          payload: [min, j],
-          explanation: `${arrayCopy[j].value} is smaller than  ${arrayCopy[min].value}\nNew minIndex = ${arrayCopy[j].id}`
+          explanation: `${cardsCopy[j].value} is smaller than ${cardsCopy[min].value}\nNew minIndex = ${cardsCopy[j].id}`
         });
         min = j;
       }
     }
+
     if (min != i) {
       state.steps.push({
         mutation: 'swap',
+        payload: [
+          { index: i, color: 'green' },
+          { index: min, color: '' },
+          { index: state.size - 1, color: state.size - 1 == min ? 'green' : '' }
+        ],
         codeBlock: 'block5',
-        payload: [i, min, i],
-        explanation: 'Swapping ${arrayCopy[j].value} and ${arrayCopy[min].value}\nNew minIndex = ${arrayCopy[j].id}'
+        explanation: 'Swapping ${cardsCopy[j].value} and ${cardsCopy[min].value}\nNew minIndex = ${cardsCopy[j].id}'
       });
-      let tmp = arrayCopy[i];
-      arrayCopy[i] = arrayCopy[min];
-      arrayCopy[min] = tmp;
+      let tmp = cardsCopy[i];
+      cardsCopy[i] = cardsCopy[min];
+      cardsCopy[min] = tmp;
+    } else {
+      state.steps.push({
+        mutation: 'highlight',
+        payload: [
+          { index: i, color: 'green' },
+          { index: state.size - 1, color: state.size - 1 == min + 1 ? 'green' : '' }
+        ],
+        codeBlock: 'block5',
+        explanation: 'CHANGE THIS correct position\nNew minIndex = ${cardsCopy[j].id}'
+      });
     }
   }
   state.steps.push({
-    mutation: 'pass',
-    explanation: 'Finished\nWith insertion sort'
+    explanation: 'Insertion sort is finished\nAll the cards are now sorted'
   });
-  return arrayCopy;
+  return cardsCopy;
 }
 
 export { bubbleSort, selectionSort };
