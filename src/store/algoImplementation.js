@@ -1,5 +1,5 @@
 function bubbleSort(state) {
-  let arrayCopy = JSON.parse(JSON.stringify(state.numbers)).slice(0, state.size);
+  let arrayCopy = JSON.parse(JSON.stringify(state.cards)).slice(0, state.size);
   let n = state.size;
   let swapped;
   do {
@@ -58,17 +58,16 @@ function bubbleSort(state) {
     alreadySorted.push({ index: n, color: 'green' });
     n--;
   }
-  console.log(alreadySorted);
   state.steps.push({
     mutation: 'highlight',
     payload: alreadySorted,
     codeBlock: 'block5',
-    explanation: `As no swaps occured, bubble sort is finished\nAll numbers are now sorted`
+    explanation: `As no swaps occured, bubble sort is finished\nAll cards are now sorted`
   });
 }
 
 function selectionSort(state) {
-  let arrayCopy = JSON.parse(JSON.stringify(state.numbers)).slice(0, state.size);
+  let arrayCopy = JSON.parse(JSON.stringify(state.cards)).slice(0, state.size);
   let n = state.size;
   state.steps.push({
     mutation: 'pass',

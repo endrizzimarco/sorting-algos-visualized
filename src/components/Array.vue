@@ -1,13 +1,13 @@
 <template lang="pug">
 .flex.justify-center.w-full.p-6
   transition-group(name='list-complete')
-    .w-40.mr-1.relative(v-for='(number, index) in slicedArray', :key='number.id', :class='durationTime', class='sm:mr-2')
+    .w-40.mr-1.relative(v-for='(card, index) in currCards', :key='card.id', :class='durationTime', class='sm:mr-2')
       .flex.justify-center.h-0.pb-130-p.border.rounded-md.border-gray-300.transition.duration-500(
-        :class='[numbers[index].color]'
+        :class='[cards[index].color]'
       ) 
         .suit.absolute.top-0.left-0(:class='responsiveSize') ♠
         .font-light.pt-45-p(:class='responsiveSize') 
-          | {{ cardValue(number.value) }}
+          | {{ cardValue(card.value) }}
         .suit.absolute.bottom-0.right-0(:class='responsiveSize') ♠
 </template>
 
@@ -41,10 +41,10 @@ export default {
       };
     },
     responsiveSize() {
-      return [this.slicedArray.length < 6 ? 'text-lg xs:text-2xl sm:text-4xl' : 'text-xs xs: sm:text-2xl xl:text-3xl'];
+      return [this.currCards.length < 6 ? 'text-lg xs:text-2xl sm:text-4xl' : 'text-xs xs: sm:text-2xl xl:text-3xl'];
     },
-    ...mapState(['numbers', 'speed']),
-    ...mapGetters(['slicedArray'])
+    ...mapState(['cards', 'speed']),
+    ...mapGetters(['currCards'])
   }
 };
 </script>

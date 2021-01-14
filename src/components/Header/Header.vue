@@ -16,10 +16,10 @@ nav.flex.flex-wrap.items-center.px-3.bg-light-navy.text-white.py-2.shadow-xl
       :items='localNumbers',
       :input='true',
       @selected='localNumbers = $event'
-    ) Numbers
+    ) Cards
     Option(:value='size', :items='options.sizes', @selected='localSize = $event') Size: {{ localSize }}
     Option(:value='speed', :items='options.speeds', @selected='localSpeed = $event') Speed: {{ localSpeed }}
-    div(@click='generateNumbers([])')
+    div(@click='generateCards([])')
       Option Shuffle
     button.bg-sky-blue.text-2xl.px-6.py-2.rounded.transition.duration-500(
       @click='handleClick',
@@ -49,7 +49,7 @@ export default {
       this.changeOptions(this.localOptions);
       document.getElementById('menu-btn').checked = false;
     },
-    ...mapMutations(['generateNumbers', 'changeOptions'])
+    ...mapMutations(['generateCards', 'changeOptions'])
   },
 
   computed: {
@@ -61,22 +61,22 @@ export default {
         speed: this.localSpeed
       };
     },
-    ...mapState(['algorithm', 'numbers', 'size', 'speed', 'options']),
-    ...mapGetters(['slicedArray'])
+    ...mapState(['algorithm', 'cards', 'size', 'speed', 'options']),
+    ...mapGetters(['currCards'])
   },
 
   beforeMount() {
     this.localAlgo = this.algorithm;
     this.localSize = this.size;
     this.localSpeed = this.speed;
-    this.slicedArray.forEach(x => this.localNumbers.push(x.value));
+    this.currCards.forEach(x => this.localNumbers.push(x.value));
   },
 
   watch: {
-    numbers() {
+    cards() {
       this.localNumbers = [];
       this.reloadWithProp += 1;
-      this.slicedArray.forEach(x => this.localNumbers.push(x.value));
+      this.currCards.forEach(x => this.localNumbers.push(x.value));
     }
   }
 };

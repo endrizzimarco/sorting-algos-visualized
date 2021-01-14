@@ -31,7 +31,7 @@ export default {
     ProgressBar
   },
   beforeMount() {
-    this.$store.commit('generateNumbers', '');
+    this.$store.commit('generateCards', '');
   }
 };
 </script>

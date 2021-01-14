@@ -6,8 +6,8 @@ const store = createStore({
   state: {
     algorithm: 'Bubble Sort',
     size: 5,
-    numbers: [],
-    numbersSnapshot: [],
+    cards: [],
+    cardsSnapshot: [],
     speed: 'Average',
     steps: [],
     stepIndex: 0,
@@ -27,9 +27,9 @@ const store = createStore({
     *******************************
     */
     // Generate array for visualization
-    generateNumbers(state, payload) {
-      state.numbers = [];
-      state.numbersSnapshot = [];
+    generateCards(state, payload) {
+      state.cards = [];
+      state.cardsSnapshot = [];
       function validRange(x) {
         return x >= 0 && x <= 13;
       }
@@ -40,8 +40,8 @@ const store = createStore({
           value: payload[i] && validRange(payload[i]) ? payload[i] : Math.ceil(Math.random() * 13),
           color: 'bg-opacity-0'
         };
-        state.numbers.push(cell);
-        state.numbersSnapshot.push(cell);
+        state.cards.push(cell);
+        state.cardsSnapshot.push(cell);
       }
       this.commit('resetVisualizer');
     },
@@ -67,7 +67,7 @@ const store = createStore({
       state.size = payload.size;
       state.speed = payload.speed;
 
-      this.commit('generateNumbers', payload.numbers);
+      this.commit('generateCards', payload.numbers);
       this.commit('resetVisualizer');
     },
     setInterval(state, payload) {
@@ -89,21 +89,21 @@ const store = createStore({
     increaseStep: state => state.stepIndex++,
     decreaseStep: state => state.stepIndex--,
     setStep: (state, payload) => (state.stepIndex = payload),
-    // Restore numbers to original set
+    // Restore cards to original set
     undoMutations(state) {
-      let originalCopy = JSON.parse(JSON.stringify(state.numbersSnapshot));
-      state.numbers = originalCopy;
+      let originalCopy = JSON.parse(JSON.stringify(state.cardsSnapshot));
+      state.cards = originalCopy;
     },
     /* 
     ************************************
       ALGORITHMS STEPS IMPLEMENTATION
     ************************************
     */
-    // Swap two numbers in array based on payload indexes
+    // Swap two cards in array based on payload indexes
     highlight(state, payload) {
       for (let i = 0; i < payload.length; i++) {
         let cardIndex = payload[i].index;
-        let card = state.numbers[cardIndex];
+        let card = state.cards[cardIndex];
 
         switch (payload[i].color) {
           case 'green':
@@ -124,9 +124,9 @@ const store = createStore({
       let card1 = payload[0].index;
       let card2 = payload[1].index;
 
-      let temp = state.numbers[card2];
-      state.numbers[card2] = state.numbers[card1];
-      state.numbers[card1] = temp;
+      let temp = state.cards[card2];
+      state.cards[card2] = state.cards[card1];
+      state.cards[card1] = temp;
 
       this.commit('highlight', payload);
     },
@@ -141,7 +141,7 @@ const store = createStore({
 
   getters: {
     // Show array based on size
-    slicedArray: state => state.numbers.slice(0, state.size),
+    currCards: state => state.cards.slice(0, state.size),
     // Return data for current algorithm
     currAlgoData: state => state.algoData[state.algorithm]
   }
