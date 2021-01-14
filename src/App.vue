@@ -6,7 +6,7 @@
     AlgorithmInfo
   .col-span-full(class='lg:col-span-5')
     AlgorithmLegend
-    Array
+    Cards
   .col-span-full(class='lg:col-span-3')
     AlgorithmCode
   .col-span-full
@@ -17,7 +17,7 @@
 import Header from './components/Header/Header.vue';
 import AlgorithmInfo from './components/AlgorithmInfo.vue';
 import AlgorithmLegend from './components/AlgorithmLegend.vue';
-import Array from './components/Array.vue';
+import Cards from './components/Cards.vue';
 import AlgorithmCode from './components/AlgorithmCode.vue';
 import ProgressBar from './components/ProgressBar.vue';
 
@@ -26,7 +26,7 @@ export default {
     Header,
     AlgorithmInfo,
     AlgorithmLegend,
-    Array,
+    Cards,
     AlgorithmCode,
     ProgressBar
   },
