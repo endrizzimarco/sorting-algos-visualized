@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import algoData from './algoData.js';
-import { bubbleSort, selectionSort } from './algoImplementation.js';
+import { bubbleSort, insertionSort, selectionSort } from './algoImplementation.js';
 
 const store = createStore({
   state: {
@@ -113,7 +113,10 @@ const store = createStore({
             card.color = 'bg-yellow-200 bg-opacity-80';
             break;
           case 'purple':
-            card.color = 'bg-purple-300 bg-opacity-80';
+            card.color =
+              state.algorithm != 'Insertion Sort'
+                ? 'bg-purple-300 bg-opacity-80'
+                : 'bg-purple-300 bg-opacity-80 moveDown';
             break;
           default:
             card.color = 'bg-opacity-0';
@@ -136,7 +139,8 @@ const store = createStore({
     *****************************************************
     */
     bubbleSort: state => bubbleSort(state),
-    selectionSort: state => selectionSort(state)
+    selectionSort: state => selectionSort(state),
+    insertionSort: state => insertionSort(state)
   },
 
   getters: {

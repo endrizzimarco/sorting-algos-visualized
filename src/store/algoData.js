@@ -17,7 +17,7 @@ export default {
       block2: '  swapped = false\n  for i=1 to n-1:',
       block3: '    if leftElement > rightElement',
       block4: '      swap(leftElement, rightElement)\n      swapped = true',
-      block5: '  n = n-1\nwhile swapped'
+      block5: '  n = n - 1\nwhile swapped'
     }
   },
   'Selection Sort': {
@@ -33,11 +33,32 @@ export default {
           where n is the length of the input. This can be very important if memory write operation is significantly
           more expensive than memory read operation, such as with Flash memory, where every write lessens the lifespan of the memory. `,
     code: {
-      block1: 'for i = 0 to length(array)-1',
-      block2: '  minIndex = i\n  for j=i+1 to length(array)',
+      block1: 'for i=0 to length(array)-1\n minIndex = i',
+      block2: '  for j=i+1 to length(array)',
       block3: '    if currentElement < min',
       block4: '      minIndex = currentElementIndex',
-      block5: '  swap(minimum, firstUnsorted)'
+      block5: '  if minIndex != i\n    swap(min, firstUnsorted)'
+    }
+  },
+  'Insertion Sort': {
+    complexities: {
+      timeBest: 'Ω(n)',
+      timeAverage: 'Θ(n^2)',
+      timeWorst: 'O(n^2)',
+      spaceWorst: 'O(1)'
+    },
+    wikipedia: 'https://en.wikipedia.org/wiki/Insertion_sort',
+    text: `Insertion sort is stable, in-place sorting algorithm that builds the final sorted array one item at a time.
+          In the real world, the data to be sorted is usually not static, but rather dynamic. Insertion Sort can therefore come in
+          handy as a well known online algorithm, which can sort a list as it receives it. 
+          It allows us to start with apartial set of elements, and after sorting it, have the ability to insert and sort more elements
+          that were not in memory when the sorting started.`,
+    code: {
+      block1: 'for i=1 to length(array)',
+      block2: '  current = firstUnsorted\n  j = currentIndex',
+      block3: '  while j > 0 and current < leftElement',
+      block4: '      shift(leftElement)\n      j = j - 1',
+      block5: '  element[j] = current'
     }
   }
 };
