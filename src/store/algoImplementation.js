@@ -174,8 +174,6 @@ function insertionSort(state) {
     });
 
     do {
-      var flag = true;
-
       state.steps.push({
         mutation: 'highlight',
         payload: [{ index: j - 1, color: 'yellow' }],
@@ -186,22 +184,20 @@ function insertionSort(state) {
       });
 
       if (j > 0 && current.value < cardsCopy[j - 1].value) {
-        cardsCopy[j] = cardsCopy[j - 1];
-        j--;
-
         state.steps.push({
           mutation: 'swap',
           payload: [
-            { index: j + 1, color: 'green' },
-            { index: j, color: 'purple' }
+            { index: j, color: 'green' },
+            { index: j - 1, color: 'purple' }
           ],
           codeBlock: 'block4',
           explanation: `${current.value} is smaller, shift ${cardsCopy[j].value} to the right\nDecrease index j by one`
         });
-      } else {
-        flag = false;
+
+        cardsCopy[j] = cardsCopy[j - 1];
+        j--;
       }
-    } while (flag);
+    } while (j > 0 && current.value < cardsCopy[j - 1].value);
 
     cardsCopy[j] = current;
 
