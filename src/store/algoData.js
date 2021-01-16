@@ -60,5 +60,26 @@ export default {
       block4: '      shift(leftElement)\n      j = j - 1',
       block5: '  element[j] = current'
     }
+  },
+  Quicksort: {
+    complexities: {
+      timeBest: 'Ω(n log(n))',
+      timeAverage: 'Θ(n log(n))',
+      timeWorst: 'O(n^2)',
+      spaceWorst: 'O(log(n))'
+    },
+    wikipedia: 'https://en.wikipedia.org/wiki/Quicksort',
+    text: `Quicksort is an efficient in-place sorting algorithm, still commonly used today, which usually performs about 
+          two to three times faster than merge sort when implemented well. Quicksort is a comparison sort, meaning that 
+          it can sort items of any type for which a less than relation is defined. In efficient implementations, it is usually
+          not a stable sort. Quicksort is also a divide-and-conquer algorithm. It works by selecting a 'pivot' element from the array
+          and partitioning the other elements into two sub-arrays which are then sorted recursevely.`,
+    code: {
+      block1: 'for each partition:\n  pivot = rightmostElement',
+      block2: '  pIndex = leftmostIndex',
+      block3: '  for i in length(partition):\n    if element[i] <= pivot:',
+      block4: '      swap(element[i], element[pIndex])\n      pIndex++',
+      block5: '  swap(pivot, element[pIndex])'
+    }
   }
 };

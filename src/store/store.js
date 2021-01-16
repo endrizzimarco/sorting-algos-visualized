@@ -13,7 +13,7 @@ const store = createStore({
     stepIndex: 0,
     interval: null,
     options: {
-      algorithms: ['Bubble Sort', 'Selection Sort', 'Insertion Sort'],
+      algorithms: ['Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Quicksort'],
       sizes: [4, 5, 6, 7, 8],
       speeds: ['Slow', 'Average', 'Fast']
     },

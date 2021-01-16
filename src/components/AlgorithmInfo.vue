@@ -29,7 +29,7 @@
       tbody
         tr(style='line-height: 2.5rem')
           td(v-for='complexity in currAlgoData.complexities')
-            code.px-1.py-1.rounded.text-sm(:class='complexityColor(complexity)', class='sm:px-3 sm:text-base') {{ complexity }}
+            code.px-1.py-1.rounded.text-xs(:class='complexityColor(complexity)', class='sm:px-3 sm:text-base') {{ complexity }}
   .w-full(v-show='toggle', class='lg:w-6/12')
     p {{ currAlgoData.text }}
     p.mt-2
@@ -61,7 +61,7 @@ export default {
       return {
         'bg-green-300': /.\(1\)/gm.test(complexity),
         'bg-yellow-300': /.\(n\)/gm.test(complexity),
-        'bg-yellow-500': /.\(n log\(n\)\)/gm.test(complexity),
+        'bg-yellow-500 bg-opacity-70': /.\(n log\(n\)\)/gm.test(complexity),
         'bg-red-300': /.\(n\^2\)/gm.test(complexity)
       };
     }
@@ -77,11 +77,6 @@ export default {
 </script>
 
 <style scoped>
-td,
-tr {
-  padding: 0vw 3vw;
-}
-
 th {
   border-radius: 5px;
   padding: 3px;
