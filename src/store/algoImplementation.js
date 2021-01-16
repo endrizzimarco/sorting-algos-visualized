@@ -173,7 +173,11 @@ function insertionSort(state) {
       explanation: `Set current to the first unsorted element (${cardsCopy[i].value})\nSet j as the index of the current element (${j})`
     });
 
-    do {
+    loop: do {
+      if (j < 1) {
+        break loop;
+      }
+
       state.steps.push({
         mutation: 'highlight',
         payload: [{ index: j - 1, color: 'yellow' }],
@@ -182,6 +186,10 @@ function insertionSort(state) {
           cardsCopy[j - 1].value
         }`
       });
+
+      if (current.value >= cardsCopy[j - 1].value) {
+        break loop;
+      }
 
       if (j > 0 && current.value < cardsCopy[j - 1].value) {
         state.steps.push({
@@ -197,7 +205,7 @@ function insertionSort(state) {
         cardsCopy[j] = cardsCopy[j - 1];
         j--;
       }
-    } while (j > 0 && current.value < cardsCopy[j - 1].value);
+    } while (current);
 
     cardsCopy[j] = current;
 
