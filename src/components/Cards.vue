@@ -9,7 +9,7 @@
         .font-light.pt-45-p(:class='responsiveSize') 
           | {{ cardValue(card.value) }}
         .suit.absolute.bottom-0.right-0(:class='responsiveSize') ♠
-      p.text-xs.font-light(class='xs:text-sm sm:text-base') {{ index }}
+      p.text-xs.font-light(class='xs:text-sm sm:text-lg') {{ index }}
 </template>
 
 <script>
