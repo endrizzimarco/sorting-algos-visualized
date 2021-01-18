@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import algoData from './algoData.js';
-import { bubbleSort, insertionSort, selectionSort } from './algoImplementation.js';
+import { bubbleSort, insertionSort, selectionSort, quicksort } from './algoImplementation.js';
 
 const store = createStore({
   state: {
@@ -68,7 +68,6 @@ const store = createStore({
       state.speed = payload.speed;
 
       this.commit('generateCards', payload.numbers);
-      this.commit('resetVisualizer');
     },
     setInterval(state, payload) {
       var playSpeed = 1000;
@@ -140,7 +139,8 @@ const store = createStore({
     */
     bubbleSort: state => bubbleSort(state),
     selectionSort: state => selectionSort(state),
-    insertionSort: state => insertionSort(state)
+    insertionSort: state => insertionSort(state),
+    quicksort: state => quicksort(state)
   },
 
   getters: {

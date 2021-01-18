@@ -221,4 +221,63 @@ function insertionSort(state) {
   });
 }
 
-export { bubbleSort, selectionSort, insertionSort };
+function quicksort(state) {
+  function swap(a, i, j) {
+    if (i == j) {
+      return;
+    }
+    state.steps.push({
+      mutation: 'swap',
+      payload: [
+        { index: j, color: '' },
+        { index: i, color: '' }
+      ]
+    });
+    let temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+  }
+
+  function partition(a, start, end) {
+    state.steps.push({
+      mutation: 'highlight',
+      payload: [
+        { index: end, color: 'green' },
+        { index: start, color: 'purple' }
+      ]
+    });
+    let pivot = a[end];
+    let pIndex = start;
+
+    for (let i = start; i < end; i++) {
+      state.steps.push({
+        mutation: 'highlight',
+        payload: [{ index: i, color: 'yellow' }]
+      });
+      if (a[i].value <= pivot.value) {
+        swap(a, i, pIndex);
+        pIndex = pIndex + 1;
+      }
+    }
+    swap(a, end, pIndex);
+
+    return pIndex;
+  }
+
+  function quicksort(a, start, end) {
+    if (start >= end) {
+      return;
+    }
+
+    let pivot = partition(a, start, end);
+
+    quicksort(a, start, pivot - 1);
+    quicksort(a, pivot + 1, end);
+  }
+
+  let cardsCopy = JSON.parse(JSON.stringify(state.cards)).slice(0, state.size);
+
+  quicksort(cardsCopy, 0, state.size - 1);
+}
+
+export { bubbleSort, selectionSort, insertionSort, quicksort };
