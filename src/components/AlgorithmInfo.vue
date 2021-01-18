@@ -60,8 +60,8 @@ export default {
     complexityColor(complexity) {
       return {
         'bg-green-300': /.\(1\)/gm.test(complexity),
-        'bg-yellow-300': /.\(n\)/gm.test(complexity),
-        'bg-yellow-500 bg-opacity-70': /.\(n log\(n\)\)/gm.test(complexity),
+        'bg-yellow-200': /.\(n\)/gm.test(complexity),
+        'bg-yellow-500 bg-opacity-60': /.\(n log\(n\)\)/gm.test(complexity),
         'bg-red-300': /.\(n\^2\)/gm.test(complexity)
       };
     }
