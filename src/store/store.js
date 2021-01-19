@@ -111,6 +111,9 @@ const store = createStore({
           case 'yellow':
             card.color = 'bg-yellow-200 bg-opacity-80';
             break;
+          case 'blue':
+            card.color = 'bg-blue-300  bg-opacity-80';
+            break;
           case 'purple':
             card.color =
               state.algorithm != 'Insertion Sort'
