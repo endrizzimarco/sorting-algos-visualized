@@ -242,8 +242,8 @@ function quicksort(state) {
     state.steps.push({
       mutation: 'highlight',
       payload: [
-        { index: end, color: 'green' },
-        { index: start, color: 'purple' }
+        { index: start, color: 'purple' },
+        { index: end, color: 'blue' }
       ]
     });
     let pivot = a[end];
@@ -257,6 +257,13 @@ function quicksort(state) {
       if (a[i].value <= pivot.value) {
         swap(a, i, pIndex);
         pIndex = pIndex + 1;
+        state.steps.push({
+          mutation: 'highlight',
+          payload: [
+            { index: i, color: '' },
+            { index: pIndex, color: 'purple' }
+          ]
+        });
       }
     }
     swap(a, end, pIndex);
