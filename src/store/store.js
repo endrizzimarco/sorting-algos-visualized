@@ -67,7 +67,15 @@ const store = createStore({
       state.size = payload.size;
       state.speed = payload.speed;
 
-      this.commit('generateCards', payload.numbers);
+      let currNums = [];
+      state.cards.slice(0, state.size).forEach(x => currNums.push(x.value));
+
+      // regenrate cards if different numbers have been inputted
+      if (JSON.stringify(currNums) != JSON.stringify(payload.numbers)) {
+        this.commit('generateCards', payload.numbers);
+      } else {
+        this.commit('resetVisualizer');
+      }
     },
     setInterval(state, payload) {
       var playSpeed = 1000;
