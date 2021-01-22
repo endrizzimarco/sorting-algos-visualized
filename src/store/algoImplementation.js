@@ -223,56 +223,90 @@ function insertionSort(state) {
 
 function quicksort(state) {
   function swap(a, i, j) {
-    if (i == j) {
-      return;
-    }
-    state.steps.push({
-      mutation: 'swap',
-      payload: [
-        { index: j, color: '' },
-        { index: i, color: '' }
-      ]
-    });
     let temp = a[i];
     a[i] = a[j];
     a[j] = temp;
   }
 
   function partition(a, start, end) {
+    let partition = [];
+    for (var i = start; i <= end; i++) {
+      partition.push(a[i].value);
+    }
+
+    if (start == end) {
+      state.steps.push({
+        mutation: 'highlight',
+        payload: [{ index: start, color: 'green' }],
+        codeBlock: 'block1',
+        explanation: `Working on partition [${partition}]\nA single element partition is already sorted`
+      });
+      return start;
+    }
+
     state.steps.push({
       mutation: 'highlight',
-      payload: [
-        { index: start, color: 'purple' },
-        { index: end, color: 'blue' }
-      ]
+      payload: [{ index: end, color: 'blue' }],
+      codeBlock: 'block1',
+      explanation: `Working on partition [${partition}]\nSelect the last element (${a[end].value}) as pivot`
     });
+    state.steps.push({
+      mutation: 'highlight',
+      payload: [{ index: start, color: 'purple' }],
+      codeBlock: 'block2',
+      explanation: `Set pIndex to the first element of the partition (${a[start].value})\nThis index will be the final position of the pivot`
+    });
+
     let pivot = a[end];
     let pIndex = start;
+    let flag = 0;
 
     for (let i = start; i < end; i++) {
       state.steps.push({
         mutation: 'highlight',
-        payload: [{ index: i, color: 'yellow' }]
+        payload: [
+          { index: i, color: 'yellow' },
+          ...(flag > 0 ? [{ index: i - 1, color: i - 1 == pIndex ? 'purple' : '' }] : [])
+        ],
+        codeBlock: 'block3',
+        explanation: `Iterate through the parition\nCheck whether ${a[i].value} is smaller than ${pivot.value}`
       });
-      if (a[i].value <= pivot.value) {
-        swap(a, i, pIndex);
-        pIndex = pIndex + 1;
+      flag += 1;
+
+      if (a[i].value < pivot.value) {
         state.steps.push({
-          mutation: 'highlight',
+          mutation: 'swap',
           payload: [
             { index: i, color: '' },
-            { index: pIndex, color: 'purple' }
-          ]
+            { index: pIndex, color: '' },
+            { index: pIndex + 1, color: 'purple' }
+          ],
+          codeBlock: 'block4',
+          explanation: `Swapping ${a[i].value} and ${a[pIndex].value}\nIncrease pIndex (currently ${pIndex + 1})`
         });
+        swap(a, i, pIndex);
+        pIndex += 1;
       }
     }
+
+    state.steps.push({
+      mutation: 'swap',
+      payload: [
+        { index: end, color: '' },
+        { index: pIndex, color: 'green' },
+        ...(end - 1 != pIndex ? [{ index: end - 1, color: '' }] : [])
+      ],
+      codeBlock: 'block5',
+      explanation: `Swap the pivot to its final position at index ${pIndex}\nAll elements to the left of the pivot are now smaller`
+    });
+
     swap(a, end, pIndex);
 
     return pIndex;
   }
 
   function quicksort(a, start, end) {
-    if (start >= end) {
+    if (start > end) {
       return;
     }
 
@@ -285,6 +319,10 @@ function quicksort(state) {
   let cardsCopy = JSON.parse(JSON.stringify(state.cards)).slice(0, state.size);
 
   quicksort(cardsCopy, 0, state.size - 1);
+
+  state.steps.push({
+    explanation: 'There are no more partitions\nAll the cards are now sorted'
+  });
 }
 
 export { bubbleSort, selectionSort, insertionSort, quicksort };

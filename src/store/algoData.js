@@ -77,7 +77,7 @@ export default {
     code: {
       block1: 'for each partition:\n  pivot = rightmostElement',
       block2: '  pIndex = leftmostIndex',
-      block3: '  for i in length(partition):\n    if element[i] <= pivot:',
+      block3: '  for i in length(partition):\n    if element[i] < pivot:',
       block4: '      swap(element[i], element[pIndex])\n      pIndex++',
       block5: '  swap(pivot, element[pIndex])'
     }
