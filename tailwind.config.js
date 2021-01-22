@@ -7,7 +7,8 @@ module.exports = {
         'light-navy': '#7360ff',
         'sky-blue': '#00d8ff',
         'dark-sky-blue': '#00bcf5',
-        'light-pink': '	#ffc2e9'
+        'light-pink': '#ffc2e9',
+        chartreuse: '#7fff00'
       },
       transitionDuration: {
         '2000': '2000ms'
