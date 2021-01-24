@@ -12,6 +12,9 @@
   .flex(v-if='isRequired')
     .legend.bg-purple-200
     p.legendName Current
+  .flex(v-if='isQuicksort')
+    .legend.bg-blue-200
+    p.legendName Pivot
 </template>
 
 <script>
@@ -20,11 +23,10 @@ import { mapState } from 'vuex';
 export default {
   computed: {
     isRequired() {
-      return this.algorithm == 'Selection Sort' || this.algorithm == 'Insertion Sort';
+      return this.algorithm != 'Bubble Sort';
     },
-    legendName() {
-      let name = this.algorithm == 'Quicksort' ? 'Pivot' : 'Current';
-      return name;
+    isQuicksort() {
+      return this.algorithm == 'Quicksort';
     },
     ...mapState(['algorithm'])
   }
