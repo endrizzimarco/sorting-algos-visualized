@@ -1,7 +1,9 @@
 <template lang="pug">
-.flex.flex-wrap.my-3.mx-5.text-left(class='md:pb-6')
+.flex.flex-wrap.my-3.mx-5.pb-5
+  //- 'Now showing' header
   .flex.w-full.pb-5
     h1.text-2xl(class='sm:text-3xl') Now showing: {{ algorithm }}
+    //- Dropdown SVG icon
     svg.ml-1.mt-2.h-5.w-5.cursor-pointer(
       @click='toggle = !toggle',
       class='lg:hidden',
@@ -15,7 +17,8 @@
         d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z',
         clip-rule='evenodd'
       )
-  .flex.justify-center.pb-5.pr-0.w-full(v-show='toggle', class='lg:w-6/12 lg:pr-4')
+  //- Complexities table
+  .flex.justify-center.pb-5(v-show='toggle', class='lg:w-6/12 lg:pr-4')
     table.table-fixed.w-full.text-center
       thead
         tr
@@ -27,17 +30,18 @@
           th Worst
           th Worst
       tbody
-        tr(style='line-height: 2.5rem')
+        tr.leading-10
           td(v-for='complexity in currAlgoData.complexities')
-            code.px-1.py-1.rounded.text-xs(:class='complexityColor(complexity)', class='sm:px-3 sm:text-base') {{ complexity }}
+            code.p-1.rounded.text-xxs(:class='complexityColor(complexity)', class='sm:px-3 sm:text-base') {{ complexity }}
+  //- Algorithm text info
   .w-full(v-show='toggle', class='lg:w-6/12')
-    p {{ currAlgoData.text }}
-    p.mt-2
+    p.text-justify {{ currAlgoData.text }}
+    p.text-left.mt-2
       | Read more at:&nbsp
-      a.pb-5.underline.text-blue-600.cursor-pointer.inline-block(
+      a.inline-block.underline.text-blue-600.cursor-pointer(
         :href='currAlgoData.wikipedia',
         target='_blank',
-        class='sm:pb-0 hover:text-blue-800 visited:text-purple-600'
+        class='hover:text-blue-800 visited:text-purple-600'
       ) {{ currAlgoData.wikipedia }}
 </template>
 
@@ -50,13 +54,16 @@ export default {
       toggle: true
     };
   },
+
   methods: {
+    //- Makes the toggle appear next to header on a small screen
     toggleOnResize() {
       const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
       if (width > 1024) {
         this.toggle = true;
       }
     },
+    //- Returns the color class for a given complexity
     complexityColor(complexity) {
       return {
         'bg-green-300': /.\(1\)/gm.test(complexity),
@@ -67,10 +74,13 @@ export default {
       };
     }
   },
+
   computed: {
     ...mapState(['algorithm']),
     ...mapGetters(['currAlgoData'])
   },
+
+  //- Add resize listener, used by toggleOnResize()
   beforeMount() {
     window.addEventListener('resize', this.toggleOnResize);
   }
@@ -85,13 +95,7 @@ th {
   background-image: linear-gradient(to bottom, #fff, #efedff);
   font-weight: normal;
   font-size: 0.85em;
-}
-
-/* th(class='sm:text-base) */
-@media (min-width: 640px) {
-  th {
-    font-size: 1em;
-  }
+  @apply sm:text-base;
 }
 
 table {
