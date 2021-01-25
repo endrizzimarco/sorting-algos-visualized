@@ -20,6 +20,9 @@ module.exports = {
       padding: {
         '130-p': '130%',
         '45-p': '45%'
+      },
+      fontSize: {
+        xxs: '.70rem'
       }
     }
   },
